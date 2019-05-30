@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Genesis_Game_Engine">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/Genesis_Game_Engine.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

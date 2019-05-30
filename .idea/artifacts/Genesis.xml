@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Genesis">
+    <output-path>$PROJECT_DIR$/out/artifacts/Genesis</output-path>
+    <root id="archive" name="Genesis.jar">
+      <element id="module-output" name="Genesis Game Engine" />
+    </root>
+  </artifact>
+</component>
