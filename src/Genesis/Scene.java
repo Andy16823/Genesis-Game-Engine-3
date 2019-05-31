@@ -362,6 +362,17 @@ public class Scene {
         this.SceneActionListeners.add(e);
     }
 
+    public GameElement getElement(String name) {
+        for(GameElement e : this.elements)
+        {
+            if(e.getName().equals(name))
+            {
+                return e;
+            }
+        }
+        return null;
+    }
+
     public void initScene(Pipeline ressources)
     {
 

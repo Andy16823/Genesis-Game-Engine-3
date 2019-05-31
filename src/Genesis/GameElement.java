@@ -286,7 +286,6 @@ public class GameElement implements Cloneable{
     public GameBehavior getBehaviorOfType(String Name) {
         for (GameBehavior e: this.behaviors)
         {
-            System.out.println(e.getClass().getName());
             if(e.getClass().getName().equals(Name))
             {
                 return e;

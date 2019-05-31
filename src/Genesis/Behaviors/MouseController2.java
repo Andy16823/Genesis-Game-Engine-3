@@ -12,7 +12,6 @@ public class MouseController2 extends GameBehavior {
         int oY = this.getParent().getLocation().getY() + (this.getParent().getSize().getY() / 2);
         float rAngel = (float) Math.atan2(destination.getY() - oY, destination.getX() - oX);
         this.getParent().setRotation(Math.toDegrees(rAngel));
-        System.out.println(rAngel);
 
         // Moving
         float x = (float) (speed * Math.cos(rAngel));
