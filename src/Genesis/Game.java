@@ -44,6 +44,20 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
         this.MousePosition = new Vector2(0,0);
         this.Input = new Input();
     }
+
+    public Game(GameCallbacks cbs, int maxFps) {
+        this.scenes = new Vector<Scene>();
+        this.uiCanvases = new Vector<Canvas>();
+        this.setBackground(new java.awt.Color(46, 154, 254));
+        this.callbacks = cbs;
+        this.loop = new Timer(maxFps, this);
+        this.addKeyListener(this);
+        this.addMouseListener(this);
+        this.addMouseMotionListener(this);
+        this.setFocusable(true);
+        this.MousePosition = new Vector2(0,0);
+        this.Input = new Input();
+    }
     
     /**
      * Adds a scene to the game
@@ -117,6 +131,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
     public void UpdateGame() {
         this.callbacks.CB_ON_UPDATE();
         this.active_scene.OnUpdate();
+        this.callbacks.CB_AFTER_UPDATE();
     }
     
     /**
@@ -312,4 +327,9 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
     public Vector<Scene> getScenes() {
         return scenes;
     }
+
+    public int getFps() {
+        return this.loop.getFps();
+    }
+
 }

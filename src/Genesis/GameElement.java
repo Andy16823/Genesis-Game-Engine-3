@@ -27,6 +27,7 @@ public class GameElement implements Cloneable{
     private Vector2 location;
     private Vector2 size;
     private double rotation;
+    private boolean ignoreSceneTranform;
     
     /**
      * 
@@ -45,6 +46,18 @@ public class GameElement implements Cloneable{
         this.sprite = Sprite; 
         this.render_mode = Type;
         this.enabled = true;
+        this.ignoreSceneTranform = false;
+    }
+
+    /**
+     * Calls the BEFORE_UPDATE function from the gamebehaviors. This function will be called even the
+     * GameElement is disabled
+     */
+    public void BeforeUpdate() {
+        for(GameBehavior behavior : this.behaviors)
+        {
+            behavior.BEFORE_UPDATE(this);
+        }
     }
 
     /**
@@ -54,6 +67,17 @@ public class GameElement implements Cloneable{
         for(GameBehavior behavior : this.behaviors)
         {
             behavior.ON_UPDATE();
+        }
+    }
+
+    /**
+     * Calls the AFTER_UPDATE function of the GameBehaviors. This function will be called even the
+     * GameElement is disabled
+     */
+    public void AfterUpdate() {
+        for(GameBehavior behavior : this.behaviors)
+        {
+            behavior.AFTER_UPDATE(this);
         }
     }
     
@@ -293,5 +317,18 @@ public class GameElement implements Cloneable{
         }
         return null;
     }
+
+    public Vector2 getCenterLocation() {
+        return new Vector2(this.location.getX() + (this.getSize().getX() / 2), this.location.getY() + (this.getSize().getY() /2));
+    }
+
+    public boolean isIgnoreSceneTranform() {
+        return ignoreSceneTranform;
+    }
+
+    public void setIgnoreSceneTranform(boolean ignoreSceneTranform) {
+        this.ignoreSceneTranform = ignoreSceneTranform;
+    }
+
 }
 

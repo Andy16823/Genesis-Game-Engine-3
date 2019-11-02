@@ -46,6 +46,11 @@ public class Vector2 {
         this.y += Value;
     }
 
+    public void addXY(int x, int y) {
+        this.x += x;
+        this.y += y;
+    }
+
     public boolean compare(Vector2 e)
     {
         if(e.getX() == x && e.getY() == y)

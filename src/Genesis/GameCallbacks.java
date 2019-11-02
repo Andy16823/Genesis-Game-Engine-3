@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
  */
 public interface GameCallbacks {
     void CB_ON_UPDATE();
+    void CB_AFTER_UPDATE();
     void CB_ON_KEY_DOWN(KeyEvent e);
     void CB_ON_KEY_RELEASE(KeyEvent e);
     void CB_ON_MOUSE_DOWN(MouseEvent e);

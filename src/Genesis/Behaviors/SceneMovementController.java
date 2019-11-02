@@ -2,9 +2,15 @@ package Genesis.Behaviors;
 
 import Genesis.GameBehavior;
 import Genesis.Math.Vector2;
+import Genesis.Scene;
 
-public class MouseController2 extends GameBehavior {
+public class SceneMovementController extends GameBehavior {
     private Vector2 destination;
+    private Scene scene;
+
+    public SceneMovementController(Scene scene) {
+        this.scene = scene;
+    }
 
     /**
      * move the gameelement in direction of the destination, with speed n
@@ -20,9 +26,11 @@ public class MouseController2 extends GameBehavior {
         // Moving
         float x = (float) (speed * Math.cos(rAngel));
         float y = (float) (speed * Math.sin(rAngel));
-        this.getParent().getLocation().addX((int) x);
-        this.getParent().getLocation().addY((int) y);
 
+        this.scene.TransformScene((int) -x, (int) -y);
+        this.destination.addXY((int) -x, (int) -y);
+        this.getParent().getLocation().addXY((int) x, (int) y);
+        //System.out.println("Destination X: " + this.destination.getX() + " Calculated Element X: " + (this.getParent().getLocation().getX() + this.scene.getLocation().getX()) + " Scene X: " + this.scene.getLocation().getX() + " " + x);
     }
 
     /**
@@ -32,7 +40,6 @@ public class MouseController2 extends GameBehavior {
     public void setDestination(Vector2 dest) {
         this.destination = dest;
     }
-
 
     /**
      * Returns the distance beetween both objects
@@ -60,4 +67,7 @@ public class MouseController2 extends GameBehavior {
         }
     }
 
+    public void clearDestination() {
+        this.destination = null;
+    }
 }

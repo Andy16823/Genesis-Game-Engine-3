@@ -7,10 +7,13 @@ package Genesis;
 
 import Genesis.Math.Vector2;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Base64;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,6 +68,29 @@ public class Toolkit {
             return  true;
         }
         return false;
+    }
+
+    public boolean isNumberBetween(float n1, float n2, float value)
+    {
+        if(value > n1 && value < n2)
+        {
+            return  true;
+        }
+        return  false;
+    }
+
+
+    public static BufferedImage Base64Decode(String base) {
+        try {
+            byte[] iBytes = Base64.getDecoder().decode(base);
+            ByteArrayInputStream is = new ByteArrayInputStream(iBytes);
+            BufferedImage img = ImageIO.read(is);
+            is.close();
+            return img;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
     
 }

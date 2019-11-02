@@ -6,7 +6,8 @@
 package Genesis.UI;
 
 import Genesis.Math.Vector2;
-import java.awt.Graphics;
+
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.Vector;
@@ -77,7 +78,8 @@ public class Canvas {
     public void RenderCanvas(Graphics g)
     {
         BufferedImage image = new BufferedImage(this.size.getX(), this.size.getY(), BufferedImage.TYPE_INT_ARGB);
-        Graphics g2d = image.createGraphics();
+        Graphics2D g2d = image.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         for(UIElement e : this.Elements)
         {
             if(e.isEnabled())

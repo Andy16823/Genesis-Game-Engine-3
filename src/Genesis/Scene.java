@@ -141,8 +141,11 @@ public class Scene {
         
         for(GameElement e : this.elements)
         {
-            e.getLocation().addX(x);
-            e.getLocation().addY(y);
+            if(!e.isIgnoreSceneTranform())
+            {
+                e.getLocation().addX(x);
+                e.getLocation().addY(y);
+            }
         }
         
         for(Lightmap lm : this.Lightmaps)
@@ -150,7 +153,26 @@ public class Scene {
             lm.getLocation().addX(x);
             lm.getLocation().addY(y);
         }
-        
+    }
+
+    public void TransformScene(int x, int y, GameElement excludeElement)
+    {
+        this.location.addX(x);
+        this.location.addY(y);
+
+        for(GameElement e : this.elements)
+        {
+            if(e != excludeElement) {
+                e.getLocation().addX(x);
+                e.getLocation().addY(y);
+            }
+        }
+
+        for(Lightmap lm : this.Lightmaps)
+        {
+            lm.getLocation().addX(x);
+            lm.getLocation().addY(y);
+        }
     }
     
     public void RenderLightmaps()
@@ -168,10 +190,14 @@ public class Scene {
     {
         for(GameElement e : this.elements)
         {
+            e.BeforeUpdate();
+
             if(e.isEnabled())
             {
                 e.OnUpdate();
             }
+
+            e.AfterUpdate();
         }
     }
     

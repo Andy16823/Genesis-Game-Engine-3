@@ -15,16 +15,34 @@ import java.util.logging.Logger;
 public class Timer extends Thread{
     private long sleep;
     private Game game;
+    private long timestamp;
+    private int fps;
+    private int stableFps;
     
     public Timer(long SleepTime, Game parent) {
         this.sleep = SleepTime;
         this.game = parent;
+        this.timestamp = 0;
+        this.fps = 0;
+        this.stableFps = 0;
     }
     
     @Override
     public void run() {
+        this.timestamp = System.currentTimeMillis() / 1000;
         while(!game.isbQuit())
         {
+            long currentTime = System.currentTimeMillis() / 1000;
+            if(currentTime >= timestamp + 1)
+            {
+                this.stableFps = fps;
+                this.fps = 0;
+                this.timestamp = System.currentTimeMillis() / 1000;
+            }
+            else {
+                this.fps += 1;
+            }
+
             this.game.UpdateGame();
             this.game.repaint();
             try {
@@ -35,5 +53,7 @@ public class Timer extends Thread{
         }
     }
 
-    
+    public int getFps() {
+        return stableFps;
+    }
 }

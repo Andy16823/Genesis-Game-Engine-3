@@ -61,9 +61,17 @@ public abstract class GameBehavior {
     public void ON_MOUSE_LEAVE(MouseEvent e){
         
     }
-    
+
+    public void BEFORE_UPDATE(GameElement e) {
+
+    }
+
     public void ON_UPDATE() {
         
+    }
+
+    public void AFTER_UPDATE(GameElement e) {
+
     }
 
     public GameElement getParent() {
