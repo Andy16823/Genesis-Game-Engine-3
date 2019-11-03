@@ -32,11 +32,11 @@ public class Scene {
     private Vector<Lightmap> Lightmaps;
     private BufferedImage scene_buffer;
     private Vector<SceneActionListener> SceneActionListeners;
+    private Vector<Layer> layer;
     
     /**
      * 
      * @param Name Your name for the scene
-     * @param Location the location from the scene
      * @param Size the size from the scene
      */
     public Scene(String Name, Vector2 Size)
@@ -47,6 +47,7 @@ public class Scene {
         this.elements = new Vector<GameElement>();
         this.Lightmaps = new Vector<Lightmap>();
         this.SceneActionListeners = new Vector<SceneActionListener>();
+        this.layer = new Vector<Layer>();
     }
     
     /**
@@ -69,6 +70,13 @@ public class Scene {
                 e.BevoreRender(g2d);
                 g2d.drawImage(e.getSprite(), e.getLocation().getX(), e.getLocation().getY(), e.getSize().getX(), e.getSize().getY(), null);
                 e.AfterRender(g2d);
+            }
+        }
+
+        for(Layer layer : this.layer) {
+            if(layer.isActive())
+            {
+                layer.RenderStaticElements(g2d);
             }
         }
         
@@ -111,6 +119,12 @@ public class Scene {
                     e.BevoreRender(g2d);
                 }
             }
+
+            for(Layer layer : this.layer) {
+                if(layer.isActive()) {
+                    layer.RenderLayer(g2d);
+                }
+            }
             
             //Lightmap
             for(Lightmap lm : this.Lightmaps)
@@ -147,6 +161,10 @@ public class Scene {
                 e.getLocation().addY(y);
             }
         }
+
+        for(Layer layer : this.layer) {
+            layer.TransformLayer(x, y);
+        }
         
         for(Lightmap lm : this.Lightmaps)
         {
@@ -166,6 +184,10 @@ public class Scene {
                 e.getLocation().addX(x);
                 e.getLocation().addY(y);
             }
+        }
+
+        for(Layer layer : this.layer) {
+            layer.TransformLayer(x, y);
         }
 
         for(Lightmap lm : this.Lightmaps)
@@ -199,6 +221,13 @@ public class Scene {
 
             e.AfterUpdate();
         }
+
+        for(Layer layer : this.layer)
+        {
+            if(layer.isActive()) {
+                layer.OnUpdate();
+            }
+        }
     }
     
     public void OnKeyDown(KeyEvent e) {
@@ -207,6 +236,12 @@ public class Scene {
             if(element.isEnabled())
             {
                 element.OnKeyDown(e);
+            }
+        }
+
+        for(Layer layer : this.layer) {
+            if(layer.isActive()) {
+                layer.OnKeyDown(e);
             }
         }
     }
@@ -219,6 +254,12 @@ public class Scene {
                 element.OnKeyUp(e);
             }
         }
+
+        for(Layer layer : this.layer) {
+            if(layer.isActive()) {
+                layer.OnKeyUp(e);
+            }
+        }
     }
     
     public void OnMouseClick(MouseEvent e) {
@@ -227,6 +268,12 @@ public class Scene {
             if(element.isEnabled())
             {
                 element.OnMouseClick(e);
+            }
+        }
+
+        for(Layer layer : this.layer) {
+            if(layer.isActive()) {
+                layer.OnMouseClick(e);
             }
         }
     }
@@ -239,6 +286,12 @@ public class Scene {
                 element.OnMouseDown(e);
             }
         }
+
+        for(Layer layer : this.layer) {
+            if(layer.isActive()) {
+                layer.OnMouseDown(e);
+            }
+        }
     }
     
     public void OnMouseUp(MouseEvent e) {
@@ -247,6 +300,12 @@ public class Scene {
             if(element.isEnabled())
             {
                 element.OnMouseUp(e);
+            }
+        }
+
+        for(Layer layer : this.layer) {
+            if(layer.isActive()) {
+                layer.OnMouseUp(e);
             }
         }
     }
@@ -259,6 +318,12 @@ public class Scene {
                 element.OnMouseEnter(e);
             }
         }
+
+        for(Layer layer : this.layer) {
+            if(layer.isActive()) {
+                layer.OnMouseEnter(e);
+            }
+        }
     }
     
     public void OnMouseLeave(MouseEvent e) {
@@ -267,6 +332,12 @@ public class Scene {
             if(element.isEnabled())
             {
                 element.OnMouseLeave(e);
+            }
+        }
+
+        for(Layer layer : this.layer) {
+            if(layer.isActive()) {
+                layer.OnMouseLeave(e);
             }
         }
     }
@@ -290,6 +361,15 @@ public class Scene {
         }
         
     }
+
+    /**
+     * Adds a new layer to the scene
+     * @param layer
+     */
+    public void addLayer(Layer layer) {
+        layer.setParentScene(this);
+        this.layer.add(layer);
+    }
     
     /**
      * Removes the GameElement
@@ -308,10 +388,15 @@ public class Scene {
     
     /**
      * Removes the GameElement
-     * @param e      */
+     * @param e
+     * */
     public void RemoveGameElement(GameElement e) 
     {
         this.elements.remove(e);
+    }
+
+    public void RemoveLayer(Layer layer) {
+        this.layer.remove(layer);
     }
     
     public void AddLightmap(Lightmap lm)
@@ -397,6 +482,15 @@ public class Scene {
             }
         }
         return null;
+    }
+
+    public Layer getLayer(String name) {
+        for(Layer layer : this.layer) {
+            if(layer.getName().equals(name)) {
+                return  layer;
+            }
+        }
+        return  null;
     }
 
     public void initScene(Pipeline ressources)

@@ -15,6 +15,7 @@ public class DynamicElementBehavior extends GameBehavior {
     public void BEFORE_UPDATE(GameElement e) {
         super.BEFORE_UPDATE(e);
 
+        // if the field of fiew contains the game element then activate it
         if(FieldOfView.contains(this.getParent().getCenterLocation())) {
             this.getParent().setEnabled(true);
         }
@@ -22,6 +23,5 @@ public class DynamicElementBehavior extends GameBehavior {
         {
             this.getParent().setEnabled(false);
         }
-
     }
 }
