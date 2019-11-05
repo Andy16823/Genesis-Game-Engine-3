@@ -192,6 +192,7 @@ public class Layer {
         }
     }
 
-
-
+    public void setElements(Vector<GameElement> elements) {
+        this.elements = elements;
+    }
 }

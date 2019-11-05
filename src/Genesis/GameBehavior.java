@@ -74,6 +74,10 @@ public abstract class GameBehavior {
 
     }
 
+    public void ON_INIT() {
+
+    }
+
     public GameElement getParent() {
         return parent;
     }

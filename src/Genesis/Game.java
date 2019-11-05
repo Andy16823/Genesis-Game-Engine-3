@@ -318,6 +318,10 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
                 c.OnMouseLeave(e);
             }
         }
+        if(this.getSelectedScene() != null)
+        {
+            this.getSelectedScene().OnMouseMove(e);
+        }
     }
 
     public Input getInput() {

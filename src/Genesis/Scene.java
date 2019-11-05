@@ -341,7 +341,34 @@ public class Scene {
             }
         }
     }
-    
+
+    public void OnMouseMove(MouseEvent e) {
+        for(GameElement element : this.elements) {
+            if(element.isEnabled()) {
+                if(element.contains(e.getX(), e.getY())) {
+                    element.setMouseFocused(true);
+                }
+                else  {
+                    element.setMouseFocused(false);
+                }
+            }
+        }
+        for(Layer layer : this.layer) {
+            if(layer.isActive()) {
+                for(GameElement element : layer.getElements()) {
+                    if(element.isEnabled()) {
+                        if(element.contains(e.getX(), e.getY())) {
+                            element.setMouseFocused(true);
+                        }
+                        else {
+                            element.setMouseFocused(false);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Adds a new GameElement
      * @param e the element
@@ -482,6 +509,10 @@ public class Scene {
             }
         }
         return null;
+    }
+
+    public GameElement getElement(String LayerName, String ElementName) {
+        return this.getLayer(LayerName).getGameElement(ElementName);
     }
 
     public Layer getLayer(String name) {

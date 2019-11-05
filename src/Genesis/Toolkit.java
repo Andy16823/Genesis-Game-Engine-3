@@ -92,5 +92,14 @@ public class Toolkit {
         }
         return null;
     }
+
+    public static void CenterPlayerElement(GameElement PlayerElement, Vector2 ScreenDimension, Scene SceneToTransform) {
+        int newPlayerX = (ScreenDimension.getX() /2) - (PlayerElement.getSize().getX() / 2);
+        int newPlayerY = (ScreenDimension.getY() / 2) - (PlayerElement.getSize().getY() / 2);
+        int playerDiffX = PlayerElement.getLocation().getX() - newPlayerX;
+        int playerDiffY = PlayerElement.getLocation().getY() - newPlayerY;
+
+        SceneToTransform.TransformScene(-playerDiffX, -playerDiffY);
+    }
     
 }

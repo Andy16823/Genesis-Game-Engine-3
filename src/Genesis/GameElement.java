@@ -7,6 +7,8 @@ package Genesis;
 
 import Genesis.Graphics.RenderMode;
 import Genesis.Math.Vector2;
+import javafx.scene.effect.Light;
+
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -28,6 +30,7 @@ public class GameElement implements Cloneable{
     private Vector2 size;
     private double rotation;
     private boolean ignoreSceneTranform;
+    private boolean mouseFocused;
     
     /**
      * 
@@ -277,7 +280,15 @@ public class GameElement implements Cloneable{
     public void setSize(Vector2 size) {
         this.size = size;
     }
-    
+
+    public boolean isMouseFocused() {
+        return mouseFocused;
+    }
+
+    public void setMouseFocused(boolean mouseFocused) {
+        this.mouseFocused = mouseFocused;
+    }
+
     /**
      * Adds a new game beahvior to the element
      */
@@ -318,6 +329,12 @@ public class GameElement implements Cloneable{
         return null;
     }
 
+    public void InitialBehaviors() {
+        for(GameBehavior behavior : this.behaviors) {
+            behavior.ON_INIT();
+        }
+    }
+
     public Vector2 getCenterLocation() {
         return new Vector2(this.location.getX() + (this.getSize().getX() / 2), this.location.getY() + (this.getSize().getY() /2));
     }
@@ -328,6 +345,22 @@ public class GameElement implements Cloneable{
 
     public void setIgnoreSceneTranform(boolean ignoreSceneTranform) {
         this.ignoreSceneTranform = ignoreSceneTranform;
+    }
+
+    public boolean contains(Vector2 point) {
+        if(point.getX() > this.getLocation().getX() && point.getY() > this.getLocation().getY() && point.getX() < (this.getLocation().getX() + this.getSize().getX()) && point.getY() < (this.getLocation().getY() + this.getSize().getY()))
+        {
+            return true;
+        }
+        return  false;
+    }
+
+    public boolean contains(int x, int y) {
+        if(x > this.getLocation().getX() && y > this.getLocation().getY() && x < (this.getLocation().getX() + this.getSize().getX()) && y < (this.getLocation().getY() + this.getSize().getY()))
+        {
+            return true;
+        }
+        return  false;
     }
 
 }
