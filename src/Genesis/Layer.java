@@ -195,4 +195,14 @@ public class Layer {
     public void setElements(Vector<GameElement> elements) {
         this.elements = elements;
     }
+
+    public GameElement getElementAt(int x, int y) {
+        for(GameElement element : this.elements) {
+            if(element.contains(x, y)){
+                return  element;
+            }
+        }
+        return  null;
+    }
+
 }

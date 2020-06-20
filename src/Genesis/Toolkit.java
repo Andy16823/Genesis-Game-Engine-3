@@ -5,6 +5,7 @@
  */
 package Genesis;
 
+import Genesis.Graphics.Camera;
 import Genesis.Math.Vector2;
 
 import java.awt.*;
@@ -101,5 +102,22 @@ public class Toolkit {
 
         SceneToTransform.TransformScene(-playerDiffX, -playerDiffY);
     }
-    
+
+    public static double getDistance(Vector2 e1, Vector2 e2) {
+        double distX = e2.getX() - e1.getX();
+        double distY = e2.getY() - e1.getY();
+
+        return Math.sqrt((distX * distX) + (distY * distY));
+    }
+
+    public static Color getColorAlpha(Color base, int alpha) {
+        return new Color(base.getRed(), base.getGreen(), base.getBlue(), alpha);
+    }
+
+    public  static void snapCamtoGameElement(GameElement element, Camera cam)
+    {
+        cam.setX(element.getCenterLocation().getX() - cam.getScene().getLocation().getX());
+        cam.setY(element.getCenterLocation().getY() - cam.getScene().getLocation().getY());
+        cam.lookAtViewport();
+    }
 }

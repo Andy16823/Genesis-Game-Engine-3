@@ -84,7 +84,7 @@ public class HighliteBehavior extends GameBehavior {
     public void createOutline() {
         this.HighliteTexture = new BufferedImage(this.getParent().getSprite().getWidth(), this.getParent().getSprite().getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = this.HighliteTexture.createGraphics();
-        g2d.setRenderingHint(RenderingHints .KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
         g2d.setColor(this.OutlineColor);

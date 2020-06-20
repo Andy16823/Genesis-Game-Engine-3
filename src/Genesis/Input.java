@@ -66,6 +66,14 @@ public class Input {
     public void setMouseInputKey(int MouseInputKey) {
         this.MouseInputKey = MouseInputKey;
     }
-      
+
+    public void clearInput() {
+        this.isInput = false;
+        this.InputKey = 0;
+        this.MouseX = 0;
+        this.MouseY = 0;
+        this.MouseInputKey = 0;
+        this.MouseInput = false;
+    }
     
 }

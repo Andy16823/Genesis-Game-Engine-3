@@ -33,7 +33,8 @@ public abstract class UIElement {
     private int BorderWidth;
     private Canvas Canvas;
     private UIElement Parent;
-    
+    private boolean Clicked;
+
     public UIElement() {
         this.ActionLisener = new Vector<UIActionListener>();
         this.enabled = true;
@@ -204,4 +205,13 @@ public abstract class UIElement {
         this.Parent = Parent;
     }
 
+    public boolean isClicked() {
+        boolean oldClicked = this.Clicked;
+        this.Clicked = false;
+        return oldClicked;
+    }
+
+    public void setClicked(boolean clicked) {
+        Clicked = clicked;
+    }
 }

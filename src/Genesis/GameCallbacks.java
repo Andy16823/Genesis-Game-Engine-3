@@ -9,6 +9,7 @@ import Genesis.Behaviors.MouseController;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 /**
  *
@@ -25,4 +26,5 @@ public interface GameCallbacks {
     void CB_ON_MOUSE_ENTER(MouseEvent e);
     void CB_ON_MOUSE_LEAVE(MouseEvent e);
     void CB_ON_MOUSE_MOVE(MouseEvent e);
+    void CB_ON_MOUSE_WHEELE_MOVE(MouseWheelEvent e);
 }

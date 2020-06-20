@@ -5,6 +5,7 @@
  */
 package Genesis;
 
+import Genesis.Graphics.Camera;
 import Genesis.Graphics.Lightmap;
 import Genesis.Graphics.RenderMode;
 import Genesis.Math.Vector2;
@@ -33,7 +34,10 @@ public class Scene {
     private BufferedImage scene_buffer;
     private Vector<SceneActionListener> SceneActionListeners;
     private Vector<Layer> layer;
-    
+    private boolean callBeforeRenderElements = false;
+    private boolean callAfterRenderElements = false;
+    private Camera camera;
+
     /**
      * 
      * @param Name Your name for the scene
@@ -48,6 +52,18 @@ public class Scene {
         this.Lightmaps = new Vector<Lightmap>();
         this.SceneActionListeners = new Vector<SceneActionListener>();
         this.layer = new Vector<Layer>();
+    }
+
+    public void InitScene() {
+
+    }
+
+    public void OnLoopStart() {
+
+    }
+
+    public void OnLoadScene() {
+
     }
     
     /**
@@ -103,6 +119,23 @@ public class Scene {
         if(this.scene_buffer != null)
         {
             g2d.drawImage(scene_buffer, this.location.getX(), this.location.getY(), this.size.getX(), this.size.getY(), null);
+
+            // Load all gameElements if its needed
+            Vector<GameElement> allElements = null;
+            if(this.callAfterRenderElements || this.callBeforeRenderElements) {
+                allElements = this.getAllGeameElements();
+            }
+
+            // Bevore Render GameElements
+            if(this.callBeforeRenderElements && allElements != null) {
+                for(GameElement e : allElements) {
+                    for(GameBehavior behavior : e.getBehaviors()) {
+                        behavior.BEVORE_RENDER_ELEMENTS(g2d);
+                    }
+                }
+            }
+
+            // Rende Scene GameElement
             for(GameElement e : this.elements)
             {
                 if(e.getRender_mode() == RenderMode.DYNAMIC && e.isEnabled())
@@ -120,12 +153,22 @@ public class Scene {
                 }
             }
 
+            // Render Layer
             for(Layer layer : this.layer) {
                 if(layer.isActive()) {
                     layer.RenderLayer(g2d);
                 }
             }
-            
+
+            // After Render GameElmenets
+            if(this.callAfterRenderElements && allElements != null) {
+                for(GameElement e : allElements) {
+                    for(GameBehavior behavior : e.getBehaviors()) {
+                        behavior.AFTER_RENDER_ELEMENTS(g2d);
+                    }
+                }
+            }
+
             //Lightmap
             for(Lightmap lm : this.Lightmaps)
             {
@@ -195,6 +238,10 @@ public class Scene {
             lm.getLocation().addX(x);
             lm.getLocation().addY(y);
         }
+    }
+
+    public void resetTransform() {
+        this.TransformScene(-this.location.getX(), -this.location.getY());
     }
     
     public void RenderLightmaps()
@@ -479,6 +526,22 @@ public class Scene {
         this.elements = elements;
     }
 
+    public boolean isCallBeforeRenderElements() {
+        return callBeforeRenderElements;
+    }
+
+    public void setCallBeforeRenderElements(boolean callBeforeRenderElements) {
+        this.callBeforeRenderElements = callBeforeRenderElements;
+    }
+
+    public boolean isCallAfterRenderElements() {
+        return callAfterRenderElements;
+    }
+
+    public void setCallAfterRenderElements(boolean callAfterRenderElements) {
+        this.callAfterRenderElements = callAfterRenderElements;
+    }
+
     public Vector<Lightmap> getLightmaps() {
         return Lightmaps;
     }
@@ -524,9 +587,24 @@ public class Scene {
         return  null;
     }
 
-    public void initScene(Pipeline ressources)
-    {
+    public Vector<GameElement> getAllGeameElements() {
+        Vector<GameElement> ret = new Vector<>();
+        for (GameElement e : this.elements) {
+            ret.add(e);
+        }
 
+        for(Layer layer : this.layer) {
+            for (GameElement e : layer.getElements()) {
+                ret.add(e);
+            }
+        }
+        return  ret;
     }
+
+    public void addCamera(Camera camera){
+        this.camera = camera;
+        this.camera.setScene(this);
+    }
+
 
 }

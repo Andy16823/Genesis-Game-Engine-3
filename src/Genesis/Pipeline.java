@@ -1,7 +1,10 @@
 package Genesis;
 
+import sun.misc.BASE64Decoder;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -44,6 +47,20 @@ public class Pipeline {
             Logger.getLogger(Toolkit.class.getName()).log(Level.SEVERE, null, ex);
         }
         return  -1;
+    }
+
+    public void InsertTextureFromBase64(String name, String base64) {
+        try {
+            BufferedImage image = null;
+            byte[] imageBytes;
+            BASE64Decoder decoder = new BASE64Decoder();
+            imageBytes = decoder.decodeBuffer(base64);
+            ByteArrayInputStream is = new ByteArrayInputStream(imageBytes);
+            image = ImageIO.read(is);
+            this.Images.add(new Ressource(name, image));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

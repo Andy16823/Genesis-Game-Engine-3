@@ -5,6 +5,8 @@
  */
 package Genesis.UI;
 
+import Genesis.Math.Vector2;
+
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.GradientPaint;
@@ -30,6 +32,19 @@ public class Button extends UIElement {
         this.GradientColor = new Color(this.getBackgroundColor().getRed(), this.getBackgroundColor().getGreen(), this.getBackgroundColor().getBlue(), 0.4f);
         this.HoverBackgroundColor = Color.RED;
         this.setEnabled(true);
+    }
+
+    public Button(String Name, String Text2, Vector2 Location, Vector2 Size)
+    {
+        this.Text = Text2;
+        this.setName(Name);
+        this.setForegroundColor(new Color(255,255,255));
+        this.setBackgroundColor(new Color(0f,0f,0f, 0.9f));
+        this.GradientColor = new Color(this.getBackgroundColor().getRed(), this.getBackgroundColor().getGreen(), this.getBackgroundColor().getBlue(), 0.4f);
+        this.HoverBackgroundColor = Color.RED;
+        this.setEnabled(true);
+        this.setLocation(Location);
+        this.setSize(Size);
     }
 
     @Override

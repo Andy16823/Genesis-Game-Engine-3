@@ -133,15 +133,21 @@ public class Canvas {
      */
     public void OnClick(MouseEvent e)
     {
-        for(UIActionListener listener : this.Callbacks)
-        {
-            listener.CB_UI_ON_CLICK(e, null);
-        }
-        for(UIElement element : this.Elements)
-        {
-            if(element.Contains(e.getX() - location.getX(), e.getY() - location.getY()) && element.isEnabled())
+        if(this.enable) {
+            for(UIActionListener listener : this.Callbacks)
             {
-                element.OnMouseClick(e);
+                listener.CB_UI_ON_CLICK(e, null);
+            }
+            for(UIElement element : this.Elements)
+            {
+                if(element.Contains(e.getX() - location.getX(), e.getY() - location.getY()) && element.isEnabled())
+                {
+                    element.OnMouseClick(e);
+                    element.setClicked(true);
+                }
+                else {
+                    element.setClicked(false);
+                }
             }
         }
     }
@@ -207,5 +213,24 @@ public class Canvas {
     public void setName(String Name) {
         this.Name = Name;
     }
-        
+
+    public void disableAllElments() {
+        for (UIElement element : this.Elements) {
+            element.setEnabled(false);
+        }
+    }
+
+    public void enableAllElements() {
+        for(UIElement element : this.Elements) {
+            element.setEnabled(true);
+        }
+    }
+
+    public void enableElement(String name) {
+        this.getElement(name).setEnabled(true);
+    }
+
+    public void disableElement(String name) {
+        this.getElement(name).setEnabled(false);
+    }
 }

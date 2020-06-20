@@ -33,6 +33,12 @@ public class MouseController2 extends GameBehavior {
         this.destination = dest;
     }
 
+    public void rotateAt() {
+        int oX = this.getParent().getLocation().getX() + (this.getParent().getSize().getX() / 2);
+        int oY = this.getParent().getLocation().getY() + (this.getParent().getSize().getY() / 2);
+        float rAngel = (float) Math.atan2(destination.getY() - oY, destination.getX() - oX);
+        this.getParent().setRotation(Math.toDegrees(rAngel));
+    }
 
     /**
      * Returns the distance beetween both objects

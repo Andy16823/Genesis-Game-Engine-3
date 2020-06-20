@@ -34,7 +34,15 @@ public abstract class GameBehavior {
     public void AFTER_RENDER(Graphics g){
         
     }
-    
+
+    public void BEVORE_RENDER_ELEMENTS(Graphics g) {
+
+    }
+
+    public void AFTER_RENDER_ELEMENTS(Graphics g) {
+
+    }
+
     public void ON_KEY_DOWN(KeyEvent e){
         
     }

@@ -4,23 +4,13 @@ import Genesis.GameBehavior;
 import Genesis.Math.Vector2;
 import Genesis.Scene;
 
-public class SceneMovementController extends GameBehavior {
+public class SceneMovementController2 extends GameBehavior {
     private Vector2 destination;
     private Scene scene;
-    private long lastSteep;
-    private int wait;
-    private int distance;
+    private float rotation;
 
-    public SceneMovementController(Scene scene) {
+    public SceneMovementController2(Scene scene) {
         this.scene = scene;
-        this.wait = 20;
-        this.distance = 10;
-    }
-
-    public SceneMovementController(Scene scene, int wait, int distance) {
-        this.scene = scene;
-        this.wait = wait;
-        this.distance = distance;
     }
 
     /**
@@ -28,11 +18,10 @@ public class SceneMovementController extends GameBehavior {
      * @param speed the speed value
      */
     public void move(int speed) {
-        // Rotate
+
         int oX = this.getParent().getLocation().getX() + (this.getParent().getSize().getX() / 2);
         int oY = this.getParent().getLocation().getY() + (this.getParent().getSize().getY() / 2);
         float rAngel = (float) Math.atan2(destination.getY() - oY, destination.getX() - oX);
-        this.getParent().setRotation(Math.toDegrees(rAngel));
 
         // Moving
         float x = (float) (speed * Math.cos(rAngel));
@@ -50,6 +39,12 @@ public class SceneMovementController extends GameBehavior {
      */
     public void setDestination(Vector2 dest) {
         this.destination = dest;
+
+        int oX = this.getParent().getLocation().getX() + (this.getParent().getSize().getX() / 2);
+        int oY = this.getParent().getLocation().getY() + (this.getParent().getSize().getY() / 2);
+        float rAngel = (float) Math.atan2(destination.getY() - oY, destination.getX() - oX);
+        this.getParent().setRotation(Math.toDegrees(rAngel));
+        this.rotation = rAngel;
     }
 
     /**
@@ -80,46 +75,5 @@ public class SceneMovementController extends GameBehavior {
 
     public void clearDestination() {
         this.destination = null;
-    }
-
-    /**
-     * Performs a stepp
-     */
-    public void performStepp() {
-        if(this.hasDestination() && this.getDistance() > this.distance) {
-            long now = System.currentTimeMillis();
-            if(now > this.lastSteep + this.wait)
-            {
-                this.move(10);
-                this.lastSteep = now;
-            }
-        }
-        else if(this.hasDestination() && this.getDistance() < this.distance) {
-            this.clearDestination();
-        }
-    }
-
-    /**
-     * Returns the wait value
-     * @return
-     */
-    public int getWait() {
-        return wait;
-    }
-
-    /**
-     * Sets the wait value
-     * @param wait
-     */
-    public void setWait(int wait) {
-        this.wait = wait;
-    }
-
-    /**
-     * Returns the destination of the movement controller
-     * @return
-     */
-    public Vector2 getDestination() {
-        return destination;
     }
 }

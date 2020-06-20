@@ -7,21 +7,20 @@ package Genesis;
 
 import Genesis.Math.Vector2;
 import Genesis.UI.Canvas;
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+
+import java.awt.*;
+import java.awt.event.*;
 import java.util.Vector;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Affine;
+
 import javax.swing.JPanel;
 
 /**
  *
  * @author Andy
  */
-public class Game extends JPanel implements KeyListener, MouseListener, MouseMotionListener {
+public class Game extends JPanel implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
     private Vector<Scene> scenes;
     private Vector<Canvas> uiCanvases;
     private Scene active_scene;
@@ -30,6 +29,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
     private Timer loop;
     private Vector2 MousePosition;
     private Input Input;
+    private float Zoom = 1.0f;
     
     public Game(GameCallbacks cbs) {
         this.scenes = new Vector<Scene>();
@@ -40,6 +40,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
         this.addKeyListener(this);
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
+        this.addMouseWheelListener(this);
         this.setFocusable(true);
         this.MousePosition = new Vector2(0,0);
         this.Input = new Input();
@@ -54,6 +55,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
         this.addKeyListener(this);
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
+        this.addMouseWheelListener(this);
         this.setFocusable(true);
         this.MousePosition = new Vector2(0,0);
         this.Input = new Input();
@@ -99,6 +101,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
      */
     public void LoadScene(int i) {
         this.active_scene = this.scenes.elementAt(i);
+        this.active_scene.OnLoadScene();
         this.active_scene.RenderStaticElements();
     }
     
@@ -114,6 +117,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
             if(scene.getName() == name)
             {
                 this.active_scene = scene;
+                this.active_scene.OnLoadScene();
                 this.active_scene.RenderStaticElements();
                 return true;
             }
@@ -138,6 +142,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
      * Starts the Loop
      */
     public void TheLoop() {
+        this.getSelectedScene().OnLoopStart();
         this.loop.run();
     }
     
@@ -179,15 +184,20 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
+        Graphics2D g2d = (Graphics2D) g;
+
+        g2d.scale(this.Zoom, this.Zoom);
         if(this.active_scene != null)
         {
-            active_scene.RenderScene(g);
-        } 
+            active_scene.RenderScene(g2d);
+        }
+
+        g2d.scale(1.0f, 1.0f);
         for(Canvas c : this.uiCanvases)
         {
             if(c.isEnable())
             {
-                c.RenderCanvas(g);
+                c.RenderCanvas(g2d);
             }
         }
     }
@@ -229,6 +239,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
     public void keyReleased(KeyEvent e) {
         this.callbacks.CB_ON_KEY_RELEASE(e);
         this.Input.setIsInput(false);
+        this.getSelectedScene().OnKeyUp(e);
     }
     
     /**
@@ -238,8 +249,8 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
     @Override
     public void mouseClicked(MouseEvent e) {
         this.callbacks.CB_ON_MOUSE_CLICK(e);
-        this.Input.setMouseInput(true);
-        this.Input.setMouseInputKey(e.getButton());
+        //this.Input.setMouseInput(true);
+        //this.Input.setMouseInputKey(e.getButton());
         for(Canvas c : this.uiCanvases)
         {
             if(c.Contains(e.getX(), e.getY()))
@@ -269,6 +280,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
     public void mouseReleased(MouseEvent e) {
         this.callbacks.CB_ON_MOUSE_RELEASE(e);
         this.Input.setMouseInput(false);
+        this.Input.setMouseInputKey(0);
     }
 
     /**
@@ -324,16 +336,44 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
         }
     }
 
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        this.callbacks.CB_ON_MOUSE_WHEELE_MOVE(e);
+    }
+
+    /**
+     * Returns the input informations
+     * @return
+     */
     public Input getInput() {
         return Input;
     }
 
+    /**
+     * Returns all scenes
+     * @return
+     */
     public Vector<Scene> getScenes() {
         return scenes;
     }
 
+    /**
+     * Returns the fps value
+     * @return
+     */
     public int getFps() {
         return this.loop.getFps();
     }
 
+    public float getZoom() {
+        return Zoom;
+    }
+
+    public void setZoom(float zoom) {
+        Zoom = zoom;
+    }
+
+    public void addZoom(float zoom) {
+        Zoom = Zoom + zoom;
+    }
 }

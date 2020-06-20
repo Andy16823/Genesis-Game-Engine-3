@@ -50,6 +50,10 @@ public class Rectangle {
         this.location.setY(y);
     }
 
+    public void setXY(int x, int y) {
+        this.location.set(x, y);
+    }
+
     /**
      * Returns the width value
      * @return
@@ -175,6 +179,44 @@ public class Rectangle {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Checks if the point inside the rectangle
+     * @param x
+     * @param y
+     * @return
+     */
+    public boolean contains(int x, int y) {
+        if(x >= this.location.getX() && x <= this.getEndX() && y >= this.location.getY() && y <= this.getEndY())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * returns the end point for the x axis
+     * @return
+     */
+    public int getEndX() {
+        return (this.getLocation().getX() + this.size.getX());
+    }
+
+    /**
+     * returns the end point for the y axis
+     * @return
+     */
+    public int getEndY() {
+        return (this.location.getY() + this.size.getY());
+    }
+
+    /**
+     * returns the end points for x and y axis
+     * @return
+     */
+    public Vector2 getEndPoint() {
+        return  new Vector2(this.getEndX(), this.getEndY());
     }
 
 }
