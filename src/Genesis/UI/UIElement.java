@@ -5,7 +5,10 @@
  */
 package Genesis.UI;
 
+import Genesis.Input;
 import Genesis.Math.Vector2;
+import com.sun.glass.events.KeyEvent;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Font;
@@ -214,4 +217,13 @@ public abstract class UIElement {
     public void setClicked(boolean clicked) {
         Clicked = clicked;
     }
+
+    public void keyPressed(Input e) {
+
+    }
+
+    public void keyReleased(Input e) {
+
+    }
+
 }

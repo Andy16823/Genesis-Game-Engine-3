@@ -44,6 +44,22 @@ public class SpotLight extends ILight {
         this.ShowDiffuse = ShowDiffuse;
     }
 
+    public int getRadius() {
+        return Radius;
+    }
+
+    public void setRadius(int radius) {
+        Radius = radius;
+    }
+
+    public boolean isShowDiffuse() {
+        return ShowDiffuse;
+    }
+
+    public void setShowDiffuse(boolean showDiffuse) {
+        ShowDiffuse = showDiffuse;
+    }
+
     @Override
     public void RenderLight(Graphics2D g) {
         super.RenderLight(g); 

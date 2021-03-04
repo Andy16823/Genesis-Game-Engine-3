@@ -77,13 +77,13 @@ public class Layer {
         return  null;
     }
 
-    public void OnUpdate() {
+    public void onUpdate(Game game) {
         for(GameElement e : this.elements) {
-            e.BeforeUpdate();
+            e.beforeUpdate();
             if(e.isEnabled()){
-                e.OnUpdate();
+                e.onUpdate(game);
             }
-            e.AfterUpdate();
+            e.afterUpdate();
         }
     }
 
@@ -91,14 +91,14 @@ public class Layer {
         for(GameElement e : this.elements) {
             if(e.getRender_mode() == RenderMode.DYNAMIC && e.isEnabled())
             {
-                e.BevoreRender(g2d);
+                e.bevoreRender(g2d);
                 AffineTransform oldTransform = g2d.getTransform();
                 AffineTransform newtransform = new AffineTransform();
                 newtransform.rotate(Math.toRadians(e.getRotation()), (e.getLocation().getX() + (e.getSize().getX() / 2)), (e.getLocation().getY() + (e.getSize().getY() / 2)));
                 g2d.setTransform(newtransform);
                 g2d.drawImage(e.getSprite(), e.getLocation().getX(), e.getLocation().getY(), e.getSize().getX(), e.getSize().getY(),null);
                 g2d.setTransform(oldTransform);
-                e.AfterRender(g2d);
+                e.afterRender(g2d);
             }
         }
     }
@@ -106,9 +106,9 @@ public class Layer {
     public void RenderStaticElements(Graphics2D g2d) {
         for(GameElement e : this.elements) {
             if(e.isEnabled() && e.getRender_mode() == RenderMode.STATIC) {
-                e.BevoreRender(g2d);
+                e.bevoreRender(g2d);
                 g2d.drawImage(e.getSprite(), e.getLocation().getX(), e.getLocation().getY(), e.getSize().getX(), e.getSize().getY(), null);
-                e.AfterRender(g2d);
+                e.afterRender(g2d);
             }
         }
     }
@@ -127,7 +127,7 @@ public class Layer {
         {
             if(element.isEnabled())
             {
-                element.OnKeyDown(e);
+                element.onKeyDown(e);
             }
         }
     }
@@ -137,7 +137,7 @@ public class Layer {
         {
             if(element.isEnabled())
             {
-                element.OnKeyUp(e);
+                element.onKeyUp(e);
             }
         }
     }
@@ -147,7 +147,7 @@ public class Layer {
         {
             if(element.isEnabled())
             {
-                element.OnMouseClick(e);
+                element.onMouseClick(e);
             }
         }
     }
@@ -157,7 +157,7 @@ public class Layer {
         {
             if(element.isEnabled())
             {
-                element.OnMouseDown(e);
+                element.onMouseDown(e);
             }
         }
     }
@@ -167,7 +167,7 @@ public class Layer {
         {
             if(element.isEnabled())
             {
-                element.OnMouseUp(e);
+                element.onMouseUp(e);
             }
         }
     }
@@ -177,7 +177,7 @@ public class Layer {
         {
             if(element.isEnabled())
             {
-                element.OnMouseEnter(e);
+                element.onMouseEnter(e);
             }
         }
     }
@@ -187,7 +187,7 @@ public class Layer {
         {
             if(element.isEnabled())
             {
-                element.OnMouseLeave(e);
+                element.onMouseLeave(e);
             }
         }
     }

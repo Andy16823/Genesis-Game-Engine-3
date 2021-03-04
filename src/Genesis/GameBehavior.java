@@ -8,7 +8,6 @@ package Genesis;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import javafx.scene.input.KeyCode;
 
 /**
  *
@@ -27,62 +26,62 @@ public abstract class GameBehavior {
         
     }
     
-    public void BEVORE_RENDER(Graphics g){
+    public void bevoreRender(Graphics g){
         
     }
     
-    public void AFTER_RENDER(Graphics g){
+    public void afterRender(Graphics g){
         
     }
 
-    public void BEVORE_RENDER_ELEMENTS(Graphics g) {
+    public void bevoreRenderElements(Graphics g) {
 
     }
 
-    public void AFTER_RENDER_ELEMENTS(Graphics g) {
+    public void afterRenderElements(Graphics g) {
 
     }
 
-    public void ON_KEY_DOWN(KeyEvent e){
-        
-    }
-    
-    public void ON_KEY_RELEASE(KeyEvent e){
+    public void onKeyDown(KeyEvent e){
         
     }
     
-    public void ON_MOUSE_CLICK(MouseEvent e){
+    public void onKeyRelease(KeyEvent e){
         
     }
     
-    public void ON_MOUSE_DOWN(MouseEvent e){
+    public void onMouseClick(MouseEvent e){
         
     }
     
-    public void ON_MOUSE_RELEASE(MouseEvent e){
-        
-    }
-    public void ON_MOUSE_ENTER(MouseEvent e){
+    public void onMouseDown(MouseEvent e){
         
     }
     
-    public void ON_MOUSE_LEAVE(MouseEvent e){
+    public void onMouseRelease(MouseEvent e){
+        
+    }
+    public void onMouseEnter(MouseEvent e){
+        
+    }
+    
+    public void onMouseLeave(MouseEvent e){
         
     }
 
-    public void BEFORE_UPDATE(GameElement e) {
+    public void beforeUpdate(GameElement e) {
 
     }
 
-    public void ON_UPDATE() {
+    public void onUpdate(Game game) {
         
     }
 
-    public void AFTER_UPDATE(GameElement e) {
+    public void afterUpdate(GameElement e) {
 
     }
 
-    public void ON_INIT() {
+    public void onInit() {
 
     }
 

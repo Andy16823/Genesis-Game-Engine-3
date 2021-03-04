@@ -38,7 +38,7 @@ public class SceneMovementController extends GameBehavior {
         float x = (float) (speed * Math.cos(rAngel));
         float y = (float) (speed * Math.sin(rAngel));
 
-        this.scene.TransformScene((int) -x, (int) -y);
+        this.scene.transformScene((int) -x, (int) -y);
         this.destination.addXY((int) -x, (int) -y);
         this.getParent().getLocation().addXY((int) x, (int) y);
         //System.out.println("Destination X: " + this.destination.getX() + " Calculated Element X: " + (this.getParent().getLocation().getX() + this.scene.getLocation().getX()) + " Scene X: " + this.scene.getLocation().getX() + " " + x);

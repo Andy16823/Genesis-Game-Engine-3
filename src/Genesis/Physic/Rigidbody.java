@@ -5,6 +5,7 @@
  */
 package Genesis.Physic;
 
+import Genesis.Game;
 import Genesis.GameBehavior;
 
 /**
@@ -22,8 +23,8 @@ public class Rigidbody extends GameBehavior {
     }
 
     @Override
-    public void ON_UPDATE() {
-        super.ON_UPDATE(); 
+    public void onUpdate(Game game) {
+        super.onUpdate(game);
         this.getParent().getLocation().addX(GravitationX);
         this.getParent().getLocation().addY(GravitationY);
     }

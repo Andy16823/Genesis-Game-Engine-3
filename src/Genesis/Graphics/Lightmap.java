@@ -59,6 +59,11 @@ public class Lightmap {
             }
         }        
     }
+
+    public void transformLightMap(int x, int y) {
+        this.getLocation().addX(x);
+        this.getLocation().addY(y);
+    }
     
     public String getName() {
         return Name;

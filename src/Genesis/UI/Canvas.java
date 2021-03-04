@@ -5,9 +5,11 @@
  */
 package Genesis.UI;
 
+import Genesis.Input;
 import Genesis.Math.Vector2;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.Vector;
@@ -110,7 +112,23 @@ public class Canvas {
             }
         }
     }
-    
+
+    /**
+     * On key pressed event
+     * @param e
+     */
+    public void keyPressed(Input e) {
+        for(UIElement element : this.Elements ) {
+            element.keyPressed(e);
+        }
+    }
+
+    public void keyReleased(Input e) {
+        for(UIElement element : this.Elements ) {
+            element.keyReleased(e);
+        }
+    }
+
     /**
      * On Mouse Leave Function
      * @param e 

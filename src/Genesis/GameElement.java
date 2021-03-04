@@ -7,7 +7,6 @@ package Genesis;
 
 import Genesis.Graphics.RenderMode;
 import Genesis.Math.Vector2;
-import javafx.scene.effect.Light;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -56,20 +55,20 @@ public class GameElement implements Cloneable{
      * Calls the BEFORE_UPDATE function from the gamebehaviors. This function will be called even the
      * GameElement is disabled
      */
-    public void BeforeUpdate() {
+    public void beforeUpdate() {
         for(GameBehavior behavior : this.behaviors)
         {
-            behavior.BEFORE_UPDATE(this);
+            behavior.beforeUpdate(this);
         }
     }
 
     /**
      * Update the GameElement
      */
-    public void OnUpdate() {
+    public void onUpdate(Game game) {
         for(GameBehavior behavior : this.behaviors)
         {
-            behavior.ON_UPDATE();
+            behavior.onUpdate(game);
         }
     }
 
@@ -77,10 +76,10 @@ public class GameElement implements Cloneable{
      * Calls the AFTER_UPDATE function of the GameBehaviors. This function will be called even the
      * GameElement is disabled
      */
-    public void AfterUpdate() {
+    public void afterUpdate() {
         for(GameBehavior behavior : this.behaviors)
         {
-            behavior.AFTER_UPDATE(this);
+            behavior.afterUpdate(this);
         }
     }
     
@@ -88,10 +87,10 @@ public class GameElement implements Cloneable{
      * Method before the element beeing rendert
      * @param g 
      */
-    public void BevoreRender(Graphics g) {
+    public void bevoreRender(Graphics g) {
         for(GameBehavior behavior : this.behaviors)
         {
-            behavior.BEVORE_RENDER(g);
+            behavior.bevoreRender(g);
         }
     }
     
@@ -99,10 +98,10 @@ public class GameElement implements Cloneable{
      * Method after the element beeing rendert
      * @param g 
      */
-    public void AfterRender(Graphics g) {
+    public void afterRender(Graphics g) {
         for(GameBehavior behavior : this.behaviors)
         {
-            behavior.AFTER_RENDER(g);
+            behavior.afterRender(g);
         }
     }
     
@@ -110,10 +109,10 @@ public class GameElement implements Cloneable{
      * Calls the behavior on key down event
      * @param e 
      */
-    public void OnKeyDown(KeyEvent e) {
+    public void onKeyDown(KeyEvent e) {
         for(GameBehavior behavior : this.behaviors)
         {
-            behavior.ON_KEY_DOWN(e);
+            behavior.onKeyDown(e);
         }
     }
     
@@ -121,10 +120,10 @@ public class GameElement implements Cloneable{
      * Calls the behavior on key release event
      * @param e 
      */
-    public void OnKeyUp(KeyEvent e) {
+    public void onKeyUp(KeyEvent e) {
         for(GameBehavior behavior : this.behaviors)
         {
-            behavior.ON_KEY_RELEASE(e);
+            behavior.onKeyRelease(e);
         }
     }
     
@@ -132,10 +131,10 @@ public class GameElement implements Cloneable{
      * Calls the behavior on mouse klick event
      * @param e 
      */
-    public void OnMouseClick(MouseEvent e) {
+    public void onMouseClick(MouseEvent e) {
         for(GameBehavior behavior : this.behaviors)
         {
-            behavior.ON_MOUSE_CLICK(e);
+            behavior.onMouseClick(e);
         }
     }
     
@@ -143,10 +142,10 @@ public class GameElement implements Cloneable{
      * Calls the behavior on mouse down event
      * @param e 
      */
-    public void OnMouseDown(MouseEvent e) {
+    public void onMouseDown(MouseEvent e) {
         for(GameBehavior behavior : this.behaviors)
         {
-            behavior.ON_MOUSE_DOWN(e);
+            behavior.onMouseDown(e);
         }
     }
     
@@ -154,10 +153,10 @@ public class GameElement implements Cloneable{
      * Calls the behavior on mouse relese event
      * @param e 
      */
-    public void OnMouseUp(MouseEvent e) {
+    public void onMouseUp(MouseEvent e) {
         for(GameBehavior behavior : this.behaviors)
         {
-            behavior.ON_MOUSE_RELEASE(e);
+            behavior.onMouseRelease(e);
         }
     }
     
@@ -165,10 +164,10 @@ public class GameElement implements Cloneable{
      * Calls the beahior on mouse enter event
      * @param e 
      */
-    public void OnMouseEnter(MouseEvent e) {
+    public void onMouseEnter(MouseEvent e) {
         for(GameBehavior behavior : this.behaviors)
         {
-            behavior.ON_MOUSE_ENTER(e);
+            behavior.onMouseEnter(e);
         }
     }
     
@@ -176,10 +175,10 @@ public class GameElement implements Cloneable{
      * Calls the behavior on mouse leave event
      * @param e 
      */
-    public void OnMouseLeave(MouseEvent e) {
+    public void onMouseLeave(MouseEvent e) {
         for(GameBehavior behavior : this.behaviors)
         {
-            behavior.ON_MOUSE_LEAVE(e);
+            behavior.onMouseLeave(e);
         }
     }
     
@@ -331,7 +330,7 @@ public class GameElement implements Cloneable{
 
     public void InitialBehaviors() {
         for(GameBehavior behavior : this.behaviors) {
-            behavior.ON_INIT();
+            behavior.onInit();
         }
     }
 
@@ -361,6 +360,39 @@ public class GameElement implements Cloneable{
             return true;
         }
         return  false;
+    }
+
+    public Vector2 forward(int width)
+    {
+        float radians = (float) Math.toRadians(this.getRotation());
+        float startX = this.getCenterLocation().getX();
+        float startY = this.getCenterLocation().getY();
+        float x = (float) (startX + width * Math.cos(radians));
+        float y = (float) (startY + width * Math.sin(radians));
+        return new Vector2((int)x, (int)y);
+    }
+
+    public boolean intersects(GameElement ref) {
+        Vector2 ref_top_left = new Vector2(ref.getLocation().getX(), ref.getLocation().getY());
+        Vector2 ref_top_right = new Vector2((ref.getLocation().getX() + ref.getSize().getX()), ref.getLocation().getY());
+        Vector2 ref_bottom_right = new Vector2((ref.getLocation().getX() + ref.getSize().getX()), (ref.getLocation().getY() + ref.getSize().getY()));
+        Vector2 ref_bottom_left = new Vector2(ref.getLocation().getX(), (ref.getLocation().getY() + ref.getSize().getY()));
+
+        if(this.contains(ref_top_left)) {
+            return true;
+        }
+        else if(this.contains(ref_top_right)) {
+            return true;
+        }
+        else if(this.contains(ref_bottom_right)) {
+            return true;
+        }
+        else if(this.contains(ref_bottom_left)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 }

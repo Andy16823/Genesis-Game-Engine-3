@@ -1,11 +1,10 @@
 package Genesis.Behaviors;
 
+import Genesis.Game;
 import Genesis.GameBehavior;
 import Genesis.Math.Vector2;
 import Genesis.Toolkit;
 
-import javax.tools.Tool;
-import javax.xml.bind.Element;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -48,34 +47,34 @@ public class MouseController extends GameBehavior {
     }
 
     @Override
-    public void BEVORE_RENDER(Graphics g) {
-        super.BEVORE_RENDER(g);
+    public void bevoreRender(Graphics g) {
+        super.bevoreRender(g);
     }
 
     @Override
-    public void AFTER_RENDER(Graphics g) {
-        super.AFTER_RENDER(g);
+    public void afterRender(Graphics g) {
+        super.afterRender(g);
     }
 
     @Override
-    public void ON_KEY_DOWN(KeyEvent e) {
-        super.ON_KEY_DOWN(e);
+    public void onKeyDown(KeyEvent e) {
+        super.onKeyDown(e);
 
     }
 
     @Override
-    public void ON_KEY_RELEASE(KeyEvent e) {
-        super.ON_KEY_RELEASE(e);
+    public void onKeyRelease(KeyEvent e) {
+        super.onKeyRelease(e);
     }
 
     @Override
-    public void ON_MOUSE_CLICK(MouseEvent e) {
-        super.ON_MOUSE_CLICK(e);
+    public void onMouseClick(MouseEvent e) {
+        super.onMouseClick(e);
     }
 
     @Override
-    public void ON_MOUSE_DOWN(MouseEvent e) {
-        super.ON_MOUSE_DOWN(e);
+    public void onMouseDown(MouseEvent e) {
+        super.onMouseDown(e);
         if(e.getButton() == this.MouseKeybind) {
             this.move = true;
             this.Location = new Vector2(e.getX(), e.getY());
@@ -84,23 +83,23 @@ public class MouseController extends GameBehavior {
     }
 
     @Override
-    public void ON_MOUSE_RELEASE(MouseEvent e) {
-        super.ON_MOUSE_RELEASE(e);
+    public void onMouseRelease(MouseEvent e) {
+        super.onMouseRelease(e);
     }
 
     @Override
-    public void ON_MOUSE_ENTER(MouseEvent e) {
-        super.ON_MOUSE_ENTER(e);
+    public void onMouseEnter(MouseEvent e) {
+        super.onMouseEnter(e);
     }
 
     @Override
-    public void ON_MOUSE_LEAVE(MouseEvent e) {
-        super.ON_MOUSE_LEAVE(e);
+    public void onMouseLeave(MouseEvent e) {
+        super.onMouseLeave(e);
     }
 
     @Override
-    public void ON_UPDATE() {
-        super.ON_UPDATE();
+    public void onUpdate(Game game) {
+        super.onUpdate(game);
 
         int ElementX = (super.getParent().getLocation().getX() + (super.getParent().getSize().getX() / 2));
         int ElementY = (super.getParent().getLocation().getY() + (super.getParent().getSize().getY() / 2));

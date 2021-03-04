@@ -24,8 +24,8 @@ public class HighliteBehavior extends GameBehavior {
 
 
     @Override
-    public void ON_INIT() {
-        super.ON_INIT();
+    public void onInit() {
+        super.onInit();
 
         this.HighliteTexture = new BufferedImage(this.getParent().getSprite().getWidth(), this.getParent().getSprite().getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = this.HighliteTexture.createGraphics();
@@ -70,8 +70,8 @@ public class HighliteBehavior extends GameBehavior {
     }
 
     @Override
-    public void ON_MOUSE_DOWN(MouseEvent e) {
-        super.ON_MOUSE_DOWN(e);
+    public void onMouseDown(MouseEvent e) {
+        super.onMouseDown(e);
         if(this.enabled == false && this.getParent().isMouseFocused()) {
             this.enabled = true;
         }
@@ -118,8 +118,8 @@ public class HighliteBehavior extends GameBehavior {
     }
 
     @Override
-    public void BEVORE_RENDER(Graphics g) {
-        super.AFTER_RENDER(g);
+    public void bevoreRender(Graphics g) {
+        super.afterRender(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints .KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);

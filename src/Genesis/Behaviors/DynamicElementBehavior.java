@@ -12,8 +12,8 @@ public class DynamicElementBehavior extends GameBehavior {
     }
 
     @Override
-    public void BEFORE_UPDATE(GameElement e) {
-        super.BEFORE_UPDATE(e);
+    public void beforeUpdate(GameElement e) {
+        super.beforeUpdate(e);
 
         // if the field of fiew contains the game element then activate it
         if(FieldOfView.contains(this.getParent().getCenterLocation())) {

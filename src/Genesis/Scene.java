@@ -9,7 +9,7 @@ import Genesis.Graphics.Camera;
 import Genesis.Graphics.Lightmap;
 import Genesis.Graphics.RenderMode;
 import Genesis.Math.Vector2;
-import java.awt.Color;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -37,6 +37,7 @@ public class Scene {
     private boolean callBeforeRenderElements = false;
     private boolean callAfterRenderElements = false;
     private Camera camera;
+    private Game game;
 
     /**
      * 
@@ -54,22 +55,22 @@ public class Scene {
         this.layer = new Vector<Layer>();
     }
 
-    public void InitScene() {
+    public void initScene() {
 
     }
 
-    public void OnLoopStart() {
+    public void onLoopStart() {
 
     }
 
-    public void OnLoadScene() {
+    public void onLoadScene() {
 
     }
     
     /**
      * Render the STATIC elements
      */
-    public void RenderStaticElements()
+    public void renderStaticElements()
     {
         this.scene_buffer = new BufferedImage(size.getX(), size.getY(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = scene_buffer.createGraphics();
@@ -83,9 +84,9 @@ public class Scene {
         {
             if(e.getRender_mode() == RenderMode.STATIC && e.isEnabled())
             {
-                e.BevoreRender(g2d);
+                e.bevoreRender(g2d);
                 g2d.drawImage(e.getSprite(), e.getLocation().getX(), e.getLocation().getY(), e.getSize().getX(), e.getSize().getY(), null);
-                e.AfterRender(g2d);
+                e.afterRender(g2d);
             }
         }
 
@@ -106,7 +107,7 @@ public class Scene {
      * Renders the scene
      * @param g 
      */
-    public void RenderScene(Graphics g) {
+    public void renderScene(Graphics g) {
         
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -130,7 +131,7 @@ public class Scene {
             if(this.callBeforeRenderElements && allElements != null) {
                 for(GameElement e : allElements) {
                     for(GameBehavior behavior : e.getBehaviors()) {
-                        behavior.BEVORE_RENDER_ELEMENTS(g2d);
+                        behavior.bevoreRenderElements(g2d);
                     }
                 }
             }
@@ -140,7 +141,7 @@ public class Scene {
             {
                 if(e.getRender_mode() == RenderMode.DYNAMIC && e.isEnabled())
                 {
-                    e.AfterRender(g2d);
+                    e.afterRender(g2d);
                     AffineTransform oldTransform = g2d.getTransform();
                     AffineTransform newtransform = new AffineTransform();
                     newtransform.rotate(Math.toRadians(e.getRotation()), (e.getLocation().getX() + (e.getSize().getX() / 2)), (e.getLocation().getY() + (e.getSize().getY() / 2)));
@@ -149,7 +150,7 @@ public class Scene {
                     // g2d.rotate(Math.toRadians(e.getRotation()), (e.getLocation().getX() + (e.getSize().getX() / 2)), (e.getLocation().getY() + (e.getSize().getY() / 2)));
                     g2d.drawImage(e.getSprite(), e.getLocation().getX(), e.getLocation().getY(), e.getSize().getX(), e.getSize().getY(),null);
                     g2d.setTransform(oldTransform);
-                    e.BevoreRender(g2d);
+                    e.bevoreRender(g2d);
                 }
             }
 
@@ -164,7 +165,7 @@ public class Scene {
             if(this.callAfterRenderElements && allElements != null) {
                 for(GameElement e : allElements) {
                     for(GameBehavior behavior : e.getBehaviors()) {
-                        behavior.AFTER_RENDER_ELEMENTS(g2d);
+                        behavior.afterRenderElements(g2d);
                     }
                 }
             }
@@ -191,7 +192,7 @@ public class Scene {
         
     }
     
-    public void TransformScene(int x, int y)
+    public void transformScene(int x, int y)
     {
         this.location.addX(x);
         this.location.addY(y);
@@ -211,12 +212,11 @@ public class Scene {
         
         for(Lightmap lm : this.Lightmaps)
         {
-            lm.getLocation().addX(x);
-            lm.getLocation().addY(y);
+            lm.transformLightMap(x,y);
         }
     }
 
-    public void TransformScene(int x, int y, GameElement excludeElement)
+    public void transformScene(int x, int y, GameElement excludeElement)
     {
         this.location.addX(x);
         this.location.addY(y);
@@ -241,10 +241,10 @@ public class Scene {
     }
 
     public void resetTransform() {
-        this.TransformScene(-this.location.getX(), -this.location.getY());
+        this.transformScene(-this.location.getX(), -this.location.getY());
     }
     
-    public void RenderLightmaps()
+    public void renderLightmaps()
     {
         for(Lightmap lm : this.Lightmaps)
         {
@@ -255,24 +255,24 @@ public class Scene {
     /**
      * Update the Scene
      */
-    public void OnUpdate()
+    public void onUpdate(Game game)
     {
         for(GameElement e : this.elements)
         {
-            e.BeforeUpdate();
+            e.beforeUpdate();
 
             if(e.isEnabled())
             {
-                e.OnUpdate();
+                e.onUpdate(game);
             }
 
-            e.AfterUpdate();
+            e.afterUpdate();
         }
 
         for(Layer layer : this.layer)
         {
             if(layer.isActive()) {
-                layer.OnUpdate();
+                layer.onUpdate(game);
             }
         }
     }
@@ -282,7 +282,7 @@ public class Scene {
         {
             if(element.isEnabled())
             {
-                element.OnKeyDown(e);
+                element.onKeyDown(e);
             }
         }
 
@@ -298,7 +298,7 @@ public class Scene {
         {
             if(element.isEnabled())
             {
-                element.OnKeyUp(e);
+                element.onKeyUp(e);
             }
         }
 
@@ -314,7 +314,7 @@ public class Scene {
         {
             if(element.isEnabled())
             {
-                element.OnMouseClick(e);
+                element.onMouseClick(e);
             }
         }
 
@@ -330,7 +330,7 @@ public class Scene {
         {
             if(element.isEnabled())
             {
-                element.OnMouseDown(e);
+                element.onMouseDown(e);
             }
         }
 
@@ -346,7 +346,7 @@ public class Scene {
         {
             if(element.isEnabled())
             {
-                element.OnMouseUp(e);
+                element.onMouseUp(e);
             }
         }
 
@@ -362,7 +362,7 @@ public class Scene {
         {
             if(element.isEnabled())
             {
-                element.OnMouseEnter(e);
+                element.onMouseEnter(e);
             }
         }
 
@@ -378,7 +378,7 @@ public class Scene {
         {
             if(element.isEnabled())
             {
-                element.OnMouseLeave(e);
+                element.onMouseLeave(e);
             }
         }
 
@@ -434,6 +434,12 @@ public class Scene {
             listener.AfterAddGameElement(e);
         }
         
+    }
+
+    public void addGameElement(int Layer, GameElement GameElement) {
+        if(this.layer.get(Layer) != null) {
+            this.layer.get(Layer).addGameElement(GameElement);
+        }
     }
 
     /**
@@ -601,10 +607,52 @@ public class Scene {
         return  ret;
     }
 
+    public Vector<GameElement> getGameElementsByTag(String tag) {
+        Vector<GameElement> ret = new Vector<>();
+        for(GameElement e : this.elements) {
+            if(e.getTag().equals(tag)) {
+                ret.add(e);
+            }
+        }
+
+        for(Layer layer : this.layer) {
+            for(GameElement e : layer.getElements()) {
+                if(e.getTag().equals(tag)) {
+                    ret.add(e);
+                }
+            }
+        }
+
+        return ret;
+    }
+
+    public Vector<GameElement> getGameElementByClass(String className) {
+        Vector<GameElement> ret = new Vector<>();
+        for(GameElement e : this.elements) {
+            if(e.getClass().getName().equals(className)) {
+                ret.add(e);
+            }
+        }
+        for(Layer layer : this.layer) {
+            for(GameElement e : layer.getElements()) {
+                if(e.getClass().getName().equals(className)) {
+                    ret.add(e);
+                }
+            }
+        }
+        return ret;
+    }
+
     public void addCamera(Camera camera){
         this.camera = camera;
         this.camera.setScene(this);
     }
 
+    public Game getGame() {
+        return game;
+    }
 
+    public void setGame(Game game) {
+        this.game = game;
+    }
 }

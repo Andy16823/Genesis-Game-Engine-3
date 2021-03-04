@@ -11,8 +11,6 @@ import Genesis.UI.Canvas;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Vector;
-import javafx.scene.paint.Color;
-import javafx.scene.transform.Affine;
 
 import javax.swing.JPanel;
 
@@ -65,7 +63,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
      * Adds a scene to the game
      * @param scene the item to add 
      */
-    public void AddScene(Scene scene) {
+    public void addScene(Scene scene) {
         this.scenes.add(scene);
     }
 
@@ -99,10 +97,10 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
      * Loads a scene
      * @param i the scene to load
      */
-    public void LoadScene(int i) {
+    public void loadScene(int i) {
         this.active_scene = this.scenes.elementAt(i);
-        this.active_scene.OnLoadScene();
-        this.active_scene.RenderStaticElements();
+        this.active_scene.onLoadScene();
+        this.active_scene.renderStaticElements();
     }
     
     /**
@@ -110,15 +108,15 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
      * @param name the name of the scene
      * @return true if its loadet, false if scene dosent exist
      */
-    public boolean LoadScene(String name)
+    public boolean loadScene(String name)
     {
         for(Scene scene : this.scenes)
         {
             if(scene.getName() == name)
             {
                 this.active_scene = scene;
-                this.active_scene.OnLoadScene();
-                this.active_scene.RenderStaticElements();
+                this.active_scene.onLoadScene();
+                this.active_scene.renderStaticElements();
                 return true;
             }
         }
@@ -133,16 +131,16 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
      * Updates the game
      */
     public void UpdateGame() {
-        this.callbacks.CB_ON_UPDATE();
-        this.active_scene.OnUpdate();
-        this.callbacks.CB_AFTER_UPDATE();
+        this.callbacks.onUpdate();
+        this.active_scene.onUpdate(this);
+        this.callbacks.afterUpdate();
     }
     
     /**
      * Starts the Loop
      */
-    public void TheLoop() {
-        this.getSelectedScene().OnLoopStart();
+    public void theLoop() {
+        this.getSelectedScene().onLoopStart();
         this.loop.run();
     }
     
@@ -189,7 +187,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
         g2d.scale(this.Zoom, this.Zoom);
         if(this.active_scene != null)
         {
-            active_scene.RenderScene(g2d);
+            active_scene.renderScene(g2d);
         }
 
         g2d.scale(1.0f, 1.0f);
@@ -225,10 +223,13 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        this.callbacks.CB_ON_KEY_DOWN(e);
+        this.callbacks.onKeyDown(e);
         this.Input.setIsInput(true);
         this.Input.setInputKey(e.getKeyCode());
         this.getSelectedScene().OnKeyDown(e);
+        for(Canvas c : this.uiCanvases) {
+            c.keyPressed(this.Input);
+        }
     }
 
     /**
@@ -237,9 +238,12 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
      */
     @Override
     public void keyReleased(KeyEvent e) {
-        this.callbacks.CB_ON_KEY_RELEASE(e);
+        this.callbacks.onKeyRelease(e);
         this.Input.setIsInput(false);
         this.getSelectedScene().OnKeyUp(e);
+        for(Canvas c : this.uiCanvases) {
+            c.keyReleased(this.Input);
+        }
     }
     
     /**
@@ -248,7 +252,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
      */
     @Override
     public void mouseClicked(MouseEvent e) {
-        this.callbacks.CB_ON_MOUSE_CLICK(e);
+        this.callbacks.onMouseClick(e);
         //this.Input.setMouseInput(true);
         //this.Input.setMouseInputKey(e.getButton());
         for(Canvas c : this.uiCanvases)
@@ -266,7 +270,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
      */
     @Override
     public void mousePressed(MouseEvent e) {
-        this.callbacks.CB_ON_MOUSE_DOWN(e);
+        this.callbacks.onMouseDown(e);
         this.Input.setMouseInput(true);
         this.Input.setMouseInputKey(e.getButton());
         this.getSelectedScene().OnMouseDown(e);
@@ -278,7 +282,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
      */
     @Override
     public void mouseReleased(MouseEvent e) {
-        this.callbacks.CB_ON_MOUSE_RELEASE(e);
+        this.callbacks.onMouseRelease(e);
         this.Input.setMouseInput(false);
         this.Input.setMouseInputKey(0);
     }
@@ -289,7 +293,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
      */
     @Override
     public void mouseEntered(MouseEvent e) {
-        this.callbacks.CB_ON_MOUSE_ENTER(e);
+        this.callbacks.onMouseEnter(e);
     }
 
     /**
@@ -298,7 +302,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
      */
     @Override
     public void mouseExited(MouseEvent e) {
-        this.callbacks.CB_ON_MOUSE_LEAVE(e);
+        this.callbacks.onMouseLeave(e);
     }
 
     /**
@@ -319,7 +323,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
         this.MousePosition.set(e.getX(), e.getY());
         this.Input.setMouseX(e.getX());
         this.Input.setMouseY(e.getY());
-        this.callbacks.CB_ON_MOUSE_MOVE(e);
+        this.callbacks.onMouseMove(e);
         for(Canvas c : this.uiCanvases)
         {
             if(c.Contains(e.getX(), e.getY()))
@@ -338,7 +342,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        this.callbacks.CB_ON_MOUSE_WHEELE_MOVE(e);
+        this.callbacks.onMouseWheeleMove(e);
     }
 
     /**

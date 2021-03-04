@@ -1,9 +1,8 @@
 package Genesis.Graphics;
 
+import Genesis.GameElement;
 import Genesis.Math.Vector2;
 import Genesis.Scene;
-
-import javax.swing.*;
 
 public class Camera {
     private int x;
@@ -19,6 +18,15 @@ public class Camera {
         this.width = width;
         this.height = height;
     }
+
+    public Camera(int x, int y, Vector2 size)
+    {
+        this.x = x;
+        this.y = y;
+        this.width = size.getX();
+        this.height = size.getY();
+    }
+
 
     public int getX() {
         return x;
@@ -91,22 +99,29 @@ public class Camera {
             this.y += y;
 
             this.scene.resetTransform();
-            this.scene.TransformScene(-this.x +(this.width / 2), -this.y + (this.height / 2));
+            this.scene.transformScene(-this.x +(this.width / 2), -this.y + (this.height / 2));
         }
     }
 
     public void activateCamera() {
         if(this.scene != null) {
             this.scene.resetTransform();
-            this.scene.TransformScene(-this.x +(this.width / 2), -this.y + (this.height / 2));
+            this.scene.transformScene(-this.x +(this.width / 2), -this.y + (this.height / 2));
         }
     }
 
     public void lookAtViewport() {
         if(this.scene != null) {
             this.scene.resetTransform();
-            this.scene.TransformScene(-this.x +(this.width / 2), -this.y + (this.height / 2));
+            this.scene.transformScene(-this.x +(this.width / 2), -this.y + (this.height / 2));
         }
+    }
+
+    public void snapToGameElement(GameElement element)
+    {
+        this.setX(element.getCenterLocation().getX() - scene.getLocation().getX());
+        this.setY(element.getCenterLocation().getY() - scene.getLocation().getY());
+        this.lookAtViewport();
     }
 
 }

@@ -100,7 +100,7 @@ public class Toolkit {
         int playerDiffX = PlayerElement.getLocation().getX() - newPlayerX;
         int playerDiffY = PlayerElement.getLocation().getY() - newPlayerY;
 
-        SceneToTransform.TransformScene(-playerDiffX, -playerDiffY);
+        SceneToTransform.transformScene(-playerDiffX, -playerDiffY);
     }
 
     public static double getDistance(Vector2 e1, Vector2 e2) {
@@ -114,10 +114,27 @@ public class Toolkit {
         return new Color(base.getRed(), base.getGreen(), base.getBlue(), alpha);
     }
 
-    public  static void snapCamtoGameElement(GameElement element, Camera cam)
+    public static void snapCamtoGameElement(GameElement element, Camera cam)
     {
         cam.setX(element.getCenterLocation().getX() - cam.getScene().getLocation().getX());
         cam.setY(element.getCenterLocation().getY() - cam.getScene().getLocation().getY());
         cam.lookAtViewport();
     }
+
+    public static Vector2 getScreenResulution() {
+        Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        Vector2 vector2 = new Vector2(dimension.width, dimension.height);
+        return vector2;
+    }
+
+    public static float getAngle(GameElement element, GameElement ref) {
+        int elementX = element.getCenterLocation().getX();
+        int elementY = element.getCenterLocation().getY();
+        int refX = ref.getCenterLocation().getX();
+        int refY = ref.getCenterLocation().getY();
+        float radians = (float) Math.atan2(refY - elementY, refX - elementX);
+        float deg = (float) Math.toDegrees(radians) - (float) element.getRotation();
+        return deg;
+    }
+
 }

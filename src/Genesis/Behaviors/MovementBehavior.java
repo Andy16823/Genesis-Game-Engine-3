@@ -1,7 +1,6 @@
 package Genesis.Behaviors;
 
 import Genesis.GameBehavior;
-import Genesis.GameElement;
 
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -97,8 +96,8 @@ public class MovementBehavior extends GameBehavior {
     }
 
     @Override
-    public void ON_KEY_DOWN(KeyEvent e) {
-        super.ON_KEY_DOWN(e);
+    public void onKeyDown(KeyEvent e) {
+        super.onKeyDown(e);
         if(e.getKeyCode() == KeybindUp)
         {
             super.getParent().setSprite(this.TextureUp);

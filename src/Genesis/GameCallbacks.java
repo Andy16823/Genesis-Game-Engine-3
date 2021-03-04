@@ -16,15 +16,15 @@ import java.awt.event.MouseWheelEvent;
  * @author Andy
  */
 public interface GameCallbacks {
-    void CB_ON_UPDATE();
-    void CB_AFTER_UPDATE();
-    void CB_ON_KEY_DOWN(KeyEvent e);
-    void CB_ON_KEY_RELEASE(KeyEvent e);
-    void CB_ON_MOUSE_DOWN(MouseEvent e);
-    void CB_ON_MOUSE_RELEASE(MouseEvent e);
-    void CB_ON_MOUSE_CLICK(MouseEvent e);
-    void CB_ON_MOUSE_ENTER(MouseEvent e);
-    void CB_ON_MOUSE_LEAVE(MouseEvent e);
-    void CB_ON_MOUSE_MOVE(MouseEvent e);
-    void CB_ON_MOUSE_WHEELE_MOVE(MouseWheelEvent e);
+    void onUpdate();
+    void afterUpdate();
+    void onKeyDown(KeyEvent e);
+    void onKeyRelease(KeyEvent e);
+    void onMouseDown(MouseEvent e);
+    void onMouseRelease(MouseEvent e);
+    void onMouseClick(MouseEvent e);
+    void onMouseEnter(MouseEvent e);
+    void onMouseLeave(MouseEvent e);
+    void onMouseMove(MouseEvent e);
+    void onMouseWheeleMove(MouseWheelEvent e);
 }

@@ -1,10 +1,9 @@
 package Genesis.Behaviors;
 
+import Genesis.Game;
 import Genesis.GameBehavior;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.EmptyStackException;
 import java.util.Vector;
 
 public class AnimationBehavior extends GameBehavior {
@@ -58,8 +57,8 @@ public class AnimationBehavior extends GameBehavior {
     }
 
     @Override
-    public void ON_UPDATE() {
-        super.ON_UPDATE();
+    public void onUpdate(Game game) {
+        super.onUpdate(game);
 
         if(AutoPlay) {
             this.PlayAnimation(this.AutoPlayAnimation);
@@ -67,13 +66,17 @@ public class AnimationBehavior extends GameBehavior {
     }
 
     @Override
-    public void ON_INIT() {
-        super.ON_INIT();
+    public void onInit() {
+        super.onInit();
         this.OldSprite = this.getParent().getSprite();
     }
 
     public BufferedImage getAnimationSheet() {
         return AnimationSheet;
+    }
+
+    public BufferedImage getSprite(int row, int column) {
+        return this.AnimationSheet.getSubimage(column * FrameWidth, row * FrameHeight, this.FrameWidth, this.FrameHeight);
     }
 
     public void setAnimationSheet(BufferedImage animationSheet) {

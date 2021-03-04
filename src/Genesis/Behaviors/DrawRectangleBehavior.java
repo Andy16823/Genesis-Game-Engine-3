@@ -20,8 +20,8 @@ public class DrawRectangleBehavior extends GameBehavior {
     }
 
     @Override
-    public void AFTER_RENDER(Graphics g) {
-        super.AFTER_RENDER(g);
+    public void afterRender(Graphics g) {
+        super.afterRender(g);
         Color oldColor = g.getColor();
         g.setColor(this.gridColor);
         g.drawRect(this.rectangle.getX(), this.rectangle.getY(), this.rectangle.getWidth(), this.rectangle.getHeight());
