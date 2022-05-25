@@ -91,14 +91,7 @@ public class Layer {
         for(GameElement e : this.elements) {
             if(e.getRender_mode() == RenderMode.DYNAMIC && e.isEnabled())
             {
-                e.bevoreRender(g2d);
-                AffineTransform oldTransform = g2d.getTransform();
-                AffineTransform newtransform = new AffineTransform();
-                newtransform.rotate(Math.toRadians(e.getRotation()), (e.getLocation().getX() + (e.getSize().getX() / 2)), (e.getLocation().getY() + (e.getSize().getY() / 2)));
-                g2d.setTransform(newtransform);
-                g2d.drawImage(e.getSprite(), e.getLocation().getX(), e.getLocation().getY(), e.getSize().getX(), e.getSize().getY(),null);
-                g2d.setTransform(oldTransform);
-                e.afterRender(g2d);
+                e.renderGameElement(g2d);
             }
         }
     }
@@ -106,9 +99,7 @@ public class Layer {
     public void RenderStaticElements(Graphics2D g2d) {
         for(GameElement e : this.elements) {
             if(e.isEnabled() && e.getRender_mode() == RenderMode.STATIC) {
-                e.bevoreRender(g2d);
-                g2d.drawImage(e.getSprite(), e.getLocation().getX(), e.getLocation().getY(), e.getSize().getX(), e.getSize().getY(), null);
-                e.afterRender(g2d);
+                e.renderGameElement(g2d);
             }
         }
     }

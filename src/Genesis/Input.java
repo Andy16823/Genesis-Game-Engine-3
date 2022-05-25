@@ -6,6 +6,7 @@
 package Genesis;
 
 import java.util.Date;
+import java.util.Vector;
 
 /**
  *
@@ -18,6 +19,11 @@ public class Input {
     private int MouseY;
     private boolean MouseInput;
     private int MouseInputKey;
+    private Vector<Integer> keysDown;
+
+    public Input() {
+        this.keysDown = new Vector<>();
+    }
     
     public boolean isIsInput() {
         return isInput;
@@ -33,6 +39,28 @@ public class Input {
 
     public void setInputKey(int InputKey) {
         this.InputKey = InputKey;
+        if(!this.keysDown.contains(InputKey)) {
+            this.keysDown.add(InputKey);
+        }
+    }
+
+    public void onKeyRelease(int Key) {
+        if(this.keysDown.contains(Key)) {
+            this.keysDown.remove(Integer.valueOf(Key));
+        }
+    }
+
+    public boolean isKeyDown(int key) {
+        return this.keysDown.contains(key);
+    }
+
+    public boolean isAnyKeyDown() {
+        if(this.keysDown.isEmpty()) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
     public int getMouseX() {

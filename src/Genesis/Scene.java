@@ -84,9 +84,7 @@ public class Scene {
         {
             if(e.getRender_mode() == RenderMode.STATIC && e.isEnabled())
             {
-                e.bevoreRender(g2d);
-                g2d.drawImage(e.getSprite(), e.getLocation().getX(), e.getLocation().getY(), e.getSize().getX(), e.getSize().getY(), null);
-                e.afterRender(g2d);
+                e.renderGameElement(g2d);
             }
         }
 
@@ -105,13 +103,10 @@ public class Scene {
     
     /**
      * Renders the scene
-     * @param g 
+     * @param g2d
      */
-    public void renderScene(Graphics g) {
-        
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        
+    public void renderScene(Graphics2D g2d) {
+
         for(SceneActionListener listener : this.SceneActionListeners)
         {
             listener.BeforeRender(g2d);
@@ -141,16 +136,7 @@ public class Scene {
             {
                 if(e.getRender_mode() == RenderMode.DYNAMIC && e.isEnabled())
                 {
-                    e.afterRender(g2d);
-                    AffineTransform oldTransform = g2d.getTransform();
-                    AffineTransform newtransform = new AffineTransform();
-                    newtransform.rotate(Math.toRadians(e.getRotation()), (e.getLocation().getX() + (e.getSize().getX() / 2)), (e.getLocation().getY() + (e.getSize().getY() / 2)));
-                    // g2d.translate((e.getLocation().getX() - (e.getSize().getX() / 2)), (e.getLocation().getY() - (e.getSize().getY() / 2)));
-                    g2d.setTransform(newtransform);
-                    // g2d.rotate(Math.toRadians(e.getRotation()), (e.getLocation().getX() + (e.getSize().getX() / 2)), (e.getLocation().getY() + (e.getSize().getY() / 2)));
-                    g2d.drawImage(e.getSprite(), e.getLocation().getX(), e.getLocation().getY(), e.getSize().getX(), e.getSize().getY(),null);
-                    g2d.setTransform(oldTransform);
-                    e.bevoreRender(g2d);
+                    e.renderGameElement(g2d);
                 }
             }
 
@@ -187,7 +173,7 @@ public class Scene {
         
         for(SceneActionListener listener : this.SceneActionListeners)
         {
-            listener.AfterRender(g);
+            listener.AfterRender(g2d);
         }
         
     }

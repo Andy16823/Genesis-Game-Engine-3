@@ -6,11 +6,13 @@
 package Genesis;
 
 import Genesis.Graphics.RenderMode;
+import Genesis.Math.Rectangle;
 import Genesis.Math.Vector2;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.Vector;
 
@@ -20,6 +22,7 @@ import java.util.Vector;
  */
 public class GameElement implements Cloneable{
     private Vector<GameBehavior> behaviors;
+    private Vector<Attribute> attributes;
     private String name;
     private String tag;
     private BufferedImage sprite;
@@ -49,6 +52,23 @@ public class GameElement implements Cloneable{
         this.render_mode = Type;
         this.enabled = true;
         this.ignoreSceneTranform = false;
+        this.tag = "unknown";
+        this.attributes = new Vector<>();
+    }
+
+    public void renderGameElement(Graphics2D g) {
+        this.bevoreRender(g);
+        AffineTransform oldTransform = g.getTransform();
+        AffineTransform newtransform = new AffineTransform();
+        newtransform.rotate(Math.toRadians(this.getRotation()), (this.getLocation().getX() + (this.getSize().getX() / 2)), (this.getLocation().getY() + (this.getSize().getY() / 2)));
+        // g2d.translate((e.getLocation().getX() - (e.getSize().getX() / 2)), (e.getLocation().getY() - (e.getSize().getY() / 2)));
+        g.setTransform(newtransform);
+        // g2d.rotate(Math.toRadians(e.getRotation()), (e.getLocation().getX() + (e.getSize().getX() / 2)), (e.getLocation().getY() + (e.getSize().getY() / 2)));
+        if(this.sprite!=null) {
+            g.drawImage(this.getSprite(), this.getLocation().getX(), this.getLocation().getY(), this.getSize().getX(), this.getSize().getY(),null);
+        }
+        g.setTransform(oldTransform);
+        this.afterRender(g);
     }
 
     /**
@@ -296,6 +316,12 @@ public class GameElement implements Cloneable{
         this.behaviors.add(behavior);
     }
 
+    public GameBehavior addBehavior2(GameBehavior behavior) {
+        behavior.setParent(this);
+        this.behaviors.add(behavior);
+        return behavior;
+    }
+
     /**
      * Returns the behaviors of the element
      */
@@ -393,6 +419,103 @@ public class GameElement implements Cloneable{
         else {
             return false;
         }
+    }
+
+    public void addAttribute(Attribute attribute) {
+        this.attributes.add(attribute);
+    }
+
+    public Attribute getAttribute(String name) {
+        for(Attribute attribute : this.attributes) {
+            if(attribute.getName().equals(name)) {
+                return attribute;
+            }
+        }
+        return  null;
+    }
+
+    public String getAttributeValue(String name) {
+        for(Attribute attribute : this.attributes) {
+            if(attribute.getName().equals(name)) {
+                return attribute.getValue();
+            }
+        }
+        return null;
+    }
+
+    public boolean contains(GameElement element) {
+        Rectangle rect = new Rectangle(this.getLocation().getX(), this.getLocation().getY(), this.getSize().getX(), this.getSize().getY());
+        if(rect.contains(element.getTopLeftCorner())) {
+            return true;
+        }
+        else if(rect.contains(element.getTopRightCorner())) {
+            return true;
+        }
+        else if(rect.contains(element.getBottomLeftCorner())) {
+            return true;
+        }
+        else if(rect.contains(element.getBottomRightCorner())) {
+            return true;
+        }
+        else if(rect.contains(element.getTopCenterLocation())) {
+            return true;
+        }
+        else if(rect.contains(element.getRightCenterLocation())) {
+            return true;
+        }
+        else if(rect.contains(element.getBottomCenterLocation())) {
+            return true;
+        }
+        else if(rect.contains(element.getLeftCenterLocation())) {
+            return true;
+        }
+        else if(rect.contains(element.getCenterLocation())) {
+            return true;
+        }
+        return false;
+    }
+
+    public Vector2 getTopLeftCorner() {
+        return this.getLocation();
+    }
+
+    public Vector2 getTopRightCorner() {
+        return new Vector2(this.getLocation().getX() + this.getSize().getX(), this.getLocation().getY());
+    }
+
+    public Vector2 getBottomLeftCorner() {
+        return new Vector2(this.getLocation().getX(), this.getLocation().getY() + this.getSize().getY());
+    }
+
+    public Vector2 getBottomRightCorner() {
+        return new Vector2(this.getLocation().getX() + this.getSize().getX(), this.getLocation().getY() + this.getSize().getY());
+    }
+
+    public Vector2 getTopCenterLocation() {
+        return new Vector2(this.getCenterLocation().getX(), this.getLocation().getY());
+    }
+
+    public Vector2 getLeftCenterLocation() {
+        return new Vector2(this.getLocation().getX(), this.getCenterLocation().getY());
+    }
+
+    public Vector2 getBottomCenterLocation() {
+        return new Vector2(this.getCenterLocation().getX(), (this.getLocation().getY() + this.getSize().getY()));
+    }
+
+    public Vector2 getRightCenterLocation() {
+        return new Vector2((this.getLocation().getX() + this.getSize().getX()), this.getCenterLocation().getY());
+    }
+
+    public boolean contains2(GameElement element) {
+        if(this.getBounds().contains(element.getBounds())) {
+            return true;
+        }
+        return false;
+    }
+
+    public java.awt.Rectangle getBounds() {
+        return new java.awt.Rectangle(this.location.getX(), this.location.getY(), this.size.getX(), this.size.getY());
     }
 
 }

@@ -18,6 +18,8 @@ public class Timer extends Thread{
     private long timestamp;
     private int fps;
     private int stableFps;
+    private long lastFrame;
+    private long deltaTime;
     
     public Timer(long SleepTime, Game parent) {
         this.sleep = SleepTime;
@@ -50,10 +52,17 @@ public class Timer extends Thread{
             } catch (InterruptedException ex) {
                 Logger.getLogger(Timer.class.getName()).log(Level.SEVERE, null, ex);
             }
+            long currentTimeMillis = System.currentTimeMillis();
+            this.deltaTime = currentTimeMillis - lastFrame;
+            this.lastFrame = currentTimeMillis;
         }
     }
 
     public int getFps() {
         return stableFps;
+    }
+
+    public long getDeltaTime() {
+        return deltaTime;
     }
 }

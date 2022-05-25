@@ -11,9 +11,13 @@ import Genesis.Math.Vector2;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Map;
 import java.util.logging.Level;
@@ -135,6 +139,36 @@ public class Toolkit {
         float radians = (float) Math.atan2(refY - elementY, refX - elementX);
         float deg = (float) Math.toDegrees(radians) - (float) element.getRotation();
         return deg;
+    }
+
+    public static File getFileFromRessources(String path) {
+        URL url = Toolkit.class.getResource(path);
+        return new File(url.getPath());
+    }
+
+    public static Color getColor(Color base, int alpha) {
+        return new Color(base.getRed(), base.getGreen(), base.getBlue(), alpha);
+    }
+
+    public static String getTime() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        return dtf.format(now);
+    }
+
+    public static Font getFont(String name, int size) {
+        InputStream is = Toolkit.class.getResourceAsStream("/Assets/Font/Font.ttf");
+        try {
+            Font baseFont = Font.createFont(Font.TRUETYPE_FONT, is);
+            Font font = baseFont.deriveFont(size);
+            return font;
+
+        } catch (FontFormatException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

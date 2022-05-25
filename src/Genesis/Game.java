@@ -10,6 +10,7 @@ import Genesis.UI.Canvas;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.util.Vector;
 
 import javax.swing.JPanel;
@@ -28,6 +29,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
     private Vector2 MousePosition;
     private Input Input;
     private float Zoom = 1.0f;
+    private BufferedImage backgroundPlane;
     
     public Game(GameCallbacks cbs) {
         this.scenes = new Vector<Scene>();
@@ -133,6 +135,11 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
     public void UpdateGame() {
         this.callbacks.onUpdate();
         this.active_scene.onUpdate(this);
+        for(Canvas c : this.uiCanvases) {
+            if(c.isEnable()) {
+                c.onUpdate(this);
+            }
+        }
         this.callbacks.afterUpdate();
     }
     
@@ -183,6 +190,16 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
         Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
+        if(this.backgroundPlane != null) {
+            g2d.drawImage(this.backgroundPlane,0, 0, this.getWidth(), this.getHeight(), null);
+        }
 
         g2d.scale(this.Zoom, this.Zoom);
         if(this.active_scene != null)
@@ -240,6 +257,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
     public void keyReleased(KeyEvent e) {
         this.callbacks.onKeyRelease(e);
         this.Input.setIsInput(false);
+        this.Input.onKeyRelease(e.getKeyCode());
         this.getSelectedScene().OnKeyUp(e);
         for(Canvas c : this.uiCanvases) {
             c.keyReleased(this.Input);
@@ -271,6 +289,8 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
     @Override
     public void mousePressed(MouseEvent e) {
         this.callbacks.onMouseDown(e);
+        this.Input.setMouseX(e.getX());
+        this.Input.setMouseY(e.getY());
         this.Input.setMouseInput(true);
         this.Input.setMouseInputKey(e.getButton());
         this.getSelectedScene().OnMouseDown(e);
@@ -311,7 +331,8 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
      */
     @Override
     public void mouseDragged(MouseEvent e) {
-        
+        this.Input.setMouseX(e.getX());
+        this.Input.setMouseY(e.getY());
     }
 
     /**
@@ -369,6 +390,10 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
         return this.loop.getFps();
     }
 
+    public long getDeltaTime() {
+        return  this.loop.getDeltaTime();
+    }
+
     public float getZoom() {
         return Zoom;
     }
@@ -379,5 +404,13 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
 
     public void addZoom(float zoom) {
         Zoom = Zoom + zoom;
+    }
+
+    public BufferedImage getBackgroundPlane() {
+        return backgroundPlane;
+    }
+
+    public void setBackgroundPlane(BufferedImage backgroundPlane) {
+        this.backgroundPlane = backgroundPlane;
     }
 }
