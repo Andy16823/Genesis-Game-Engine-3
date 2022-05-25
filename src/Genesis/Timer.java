@@ -13,16 +13,18 @@ import java.util.logging.Logger;
  * @author Andy
  */
 public class Timer extends Thread{
-    private long sleep;
+    private long maxFps;
     private Game game;
     private long timestamp;
     private int fps;
     private int stableFps;
     private long lastFrame;
     private long deltaTime;
-    
-    public Timer(long SleepTime, Game parent) {
-        this.sleep = SleepTime;
+    private long currentFrame;
+    private long frameTime;
+
+    public Timer(long maxFps, Game parent) {
+        this.maxFps = maxFps;
         this.game = parent;
         this.timestamp = 0;
         this.fps = 0;
@@ -34,27 +36,26 @@ public class Timer extends Thread{
         this.timestamp = System.currentTimeMillis() / 1000;
         while(!game.isbQuit())
         {
-            long currentTime = System.currentTimeMillis() / 1000;
-            if(currentTime >= timestamp + 1)
-            {
-                this.stableFps = fps;
-                this.fps = 0;
-                this.timestamp = System.currentTimeMillis() / 1000;
-            }
-            else {
-                this.fps += 1;
-            }
+            this.frameTime = 1000 / maxFps;
+            this.currentFrame = System.currentTimeMillis();
+            long currentTime = currentFrame / 1000;
 
-            this.game.UpdateGame();
-            this.game.repaint();
-            try {
-                this.sleep(sleep);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Timer.class.getName()).log(Level.SEVERE, null, ex);
+            if(this.currentFrame > this.lastFrame + this.frameTime) {
+                if(currentTime >= timestamp + 1)
+                {
+                    this.stableFps = fps;
+                    this.fps = 0;
+                    this.timestamp = System.currentTimeMillis() / 1000;
+                }
+                else {
+                    this.fps += 1;
+                }
+
+                this.game.UpdateGame();
+                this.game.repaint();
+                this.deltaTime = currentFrame - lastFrame;
+                this.lastFrame = currentFrame;
             }
-            long currentTimeMillis = System.currentTimeMillis();
-            this.deltaTime = currentTimeMillis - lastFrame;
-            this.lastFrame = currentTimeMillis;
         }
     }
 

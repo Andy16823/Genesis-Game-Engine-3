@@ -23,6 +23,15 @@ public class GFrame extends JFrame implements GameCallbacks {
         this.add(gamePanel);
     }
 
+    public GFrame(int width, int height, long maxFps) {
+        this.setSize(width, height);
+        this.gamePanel = new Game(this, (int) maxFps);
+        this.callbacks = new Vector<>();
+        this.pipeline = new Pipeline();
+        this.camera = new Camera(0,0, width, height);
+        this.add(gamePanel);
+    }
+
     public void init() {
         for(GFrameCallbacks callback : this.callbacks) {
             callback.onInit(this.gamePanel);

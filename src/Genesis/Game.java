@@ -142,7 +142,7 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
         }
         this.callbacks.afterUpdate();
     }
-    
+
     /**
      * Starts the Loop
      */
@@ -392,6 +392,9 @@ public class Game extends JPanel implements KeyListener, MouseListener, MouseMot
 
     public long getDeltaTime() {
         return  this.loop.getDeltaTime();
+    }
+    public float getDTS() {
+        return this.loop.getDeltaTime() / 1000f;
     }
 
     public float getZoom() {
