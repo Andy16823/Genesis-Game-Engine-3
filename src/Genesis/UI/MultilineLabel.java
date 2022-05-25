@@ -10,6 +10,7 @@ public class MultilineLabel extends UIElement {
     private Vector<String> lines;
     private int lineHeight;
     private int lineSpaceing;
+    private TextAlign textAlign = TextAlign.LEFT;
 
     public MultilineLabel(String Name, Vector2 Location, int width)
     {
@@ -53,17 +54,33 @@ public class MultilineLabel extends UIElement {
     }
 
     @Override
-    public void Render(Graphics g) {
-        super.Render(g);
+    public void onRender(Graphics g) {
+        super.onRender(g);
         if(this.isEnabled())
         {
             BufferedImage buffer = new BufferedImage(this.getSize().getX(), this.getSize().getY(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = buffer.createGraphics();
             g2d.setColor(this.getForegroundColor());
-            int currentLine = 0;
+            FontMetrics fontMetrics = g2d.getFontMetrics();
+            this.lineHeight = fontMetrics.getHeight() + lineSpaceing;
 
+            int currentLine = 0;
             for(String line : this.lines) {
-                g2d.drawString(line, 0, ((this.lineHeight * currentLine) + lineHeight));
+                int textHeight = fontMetrics.getHeight();
+                int x = 0;
+                int y = ((lineHeight * currentLine) + lineHeight);
+                if(this.textAlign == TextAlign.CENTER) {
+                    int textWidth = fontMetrics.stringWidth(line);
+                    x = (this.getSize().getX() / 2) - (textWidth / 2);
+                }
+                else if(this.textAlign == TextAlign.RIGHT) {
+                    int textWidth = fontMetrics.stringWidth(line);
+                    x = this.getSize().getX() - textWidth;
+                }
+                else {
+                    x = 0;
+                }
+                g2d.drawString(line, x, y);
                 currentLine += 1;
             }
             g.drawImage(buffer, this.getLocation().getX(), this.getLocation().getY(), this.getSize().getX(), this.getSize().getY(), null);
@@ -75,8 +92,8 @@ public class MultilineLabel extends UIElement {
     }
 
     @Override
-    public void OnUpdate() {
-        super.OnUpdate(); //To change body of generated methods, choose Tools | Templates.
+    public void onUpdate() {
+        super.onUpdate(); //To change body of generated methods, choose Tools | Templates.
     }
 
     public Vector<String> getLines() {
@@ -101,5 +118,22 @@ public class MultilineLabel extends UIElement {
 
     public void setLineSpaceing(int lineSpaceing) {
         this.lineSpaceing = lineSpaceing;
+    }
+
+    @Override
+    public void setText(String text) {
+        super.setText(text);
+        this.lines.clear();
+        for(String line : text.split("\n")) {
+            lines.add(line);
+        }
+    }
+
+    public TextAlign getTextAlign() {
+        return textAlign;
+    }
+
+    public void setTextAlign(TextAlign textAlign) {
+        this.textAlign = textAlign;
     }
 }

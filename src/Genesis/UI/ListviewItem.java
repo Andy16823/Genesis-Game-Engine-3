@@ -40,8 +40,8 @@ public class ListviewItem extends UIElement{
     }
 
     @Override
-    public void Render(Graphics g) {
-        super.Render(g); 
+    public void onRender(Graphics g) {
+        super.onRender(g);
         
         BufferedImage buffer = new BufferedImage(this.Parent.getItemSize().getX(), this.Parent.getItemSize().getY(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = buffer.createGraphics();

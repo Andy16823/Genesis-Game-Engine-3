@@ -65,4 +65,21 @@ public class Vector2 {
         this.y = Y;
     }
 
+    public static Vector2 zero() {
+        return new Vector2(0,0);
+    }
+
+    public Vector2 duplicate() {
+        return new Vector2(x,y);
+    }
+
+    public boolean equals(Vector2 ref) {
+        if(this.x == ref.getX() && y == ref.getY()) {
+            return true;
+        }
+        else {
+            return  false;
+        }
+    }
+
 }

@@ -5,9 +5,9 @@
  */
 package Genesis.UI;
 
+import Genesis.GameElement;
 import Genesis.Input;
 import Genesis.Math.Vector2;
-import com.sun.glass.events.KeyEvent;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -21,6 +21,7 @@ import java.util.Vector;
  */
 public abstract class UIElement {
     private Vector<UIActionListener> ActionLisener;
+    private Vector<UIElement> children;
     private String name;
     private String tag;
     private String text;
@@ -38,38 +39,85 @@ public abstract class UIElement {
     private UIElement Parent;
     private boolean Clicked;
 
+
     public UIElement() {
         this.ActionLisener = new Vector<UIActionListener>();
+        this.children = new Vector<>();
         this.enabled = true;
     }
        
-    public void OnUpdate(){
+    public void onUpdate(){
+        for(UIElement c : this.children) {
+            c.onUpdate();
+        }
+    }
+    public void onRender(Graphics g){
     
     }
-    public void Render(Graphics g){
-    
+
+    public void addChildren(UIElement element) {
+        element.setParent(this);
+        element.setCanvas(this.Canvas);
+        this.children.add(element);
     }
-    
-    public void Hover(MouseEvent e) {
+
+    public Vector2 getElementOffset() {
+        int offsetX = this.getLocation().getX();
+        int offsetY = this.getLocation().getY();
+        UIElement child = this;
+
+        while (child.getParent() != null) {
+            offsetX += child.getParent().getLocation().getX();
+            offsetY += child.getParent().getLocation().getY();
+            child = child.getParent();
+        }
+
+        offsetX += Canvas.getLocation().getX();
+        offsetY += Canvas.getLocation().getY();
+        return new Vector2(offsetX, offsetY);
+    }
+
+    public void onHover(MouseEvent e) {
         this.Hovered = true;
         for(UIActionListener Listener : this.ActionLisener)
         {
             Listener.CB_UI_ON_HOVER(e, this);
         }
+
+        for(UIElement element : this.children) {
+            if(element.contains(e.getX(), e.getY())) {
+                element.onHover(e);
+            }
+        }
+
     }
     
-    public void OnMouseLeave(MouseEvent e)    {
+    public void onMouseLeave(MouseEvent e)    {
         this.Hovered = false;
         for(UIActionListener Listener: this.ActionLisener)
         {
             Listener.CB_UI_ON_LEAVE(e, this);
         }
+
+        for(UIElement element : this.children) {
+            element.onMouseLeave(e);
+        }
+
     }
     
-    public void OnMouseClick(MouseEvent e) {
+    public void onMouseClick(MouseEvent e) {
         for(UIActionListener listener : this.ActionLisener)
         {
             listener.CB_UI_ON_CLICK(e, this);
+        }
+        for(UIElement element : this.children) {
+            if(element.contains(e.getX(), e.getY())) {
+                element.onMouseClick(e);
+                element.setClicked(true);
+            }
+            else {
+                element.setClicked(false);
+            }
         }
     }
     
@@ -78,16 +126,24 @@ public abstract class UIElement {
         this.ActionLisener.add(e);
     }
     
-    public boolean Contains(int X, int Y) {
-        int Width = this.getLocation().getX() + this.getSize().getX();
-        int Height = this.getLocation().getY() + this.getSize().getY();
-        if(X > this.getLocation().getX() && Y > this.getLocation().getY() && X < Width && Y < Height)
+    public boolean contains(int X, int Y) {
+        Vector2 offsetVector = this.getElementOffset();
+        int Width = offsetVector.getX() + this.getSize().getX();
+        int Height = offsetVector.getY() + this.getSize().getY();
+        if(X > offsetVector.getX() && Y > offsetVector.getY() && X < Width && Y < Height)
         {
             return true;
         }
         return false;
     }
-    
+
+    public void onElementAddToCanvas(Canvas c) {
+        for(UIElement e : this.children) {
+            e.setCanvas(c);
+            e.onElementAddToCanvas(c);
+        }
+    }
+
     public String getName() {
         return name;
     }
@@ -120,12 +176,20 @@ public abstract class UIElement {
         this.location = location;
     }
 
+    public void setLocation(int x, int y) {
+        this.location = new Vector2(x, y);
+    }
+
     public Vector2 getSize() {
         return size;
     }
 
     public void setSize(Vector2 size) {
         this.size = size;
+    }
+
+    public void setSize(int x, int y) {
+        this.size = new Vector2(x,y);
     }
 
     public Color getForegroundColor() {
@@ -224,6 +288,23 @@ public abstract class UIElement {
 
     public void keyReleased(Input e) {
 
+    }
+
+    public Vector<UIElement> getChildren() {
+        return children;
+    }
+
+    public void setChildren(Vector<UIElement> children) {
+        this.children = children;
+    }
+
+    public UIElement getChildren(String name) {
+        for(UIElement element : this.children) {
+            if(element.getName().equals(name)) {
+                return element;
+            }
+        }
+        return null;
     }
 
 }

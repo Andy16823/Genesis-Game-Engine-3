@@ -48,8 +48,8 @@ public class Button extends UIElement {
     }
 
     @Override
-    public void Render(Graphics g) {
-        super.Render(g); 
+    public void onRender(Graphics g) {
+        super.onRender(g);
         
         
         // Create Render Contex

@@ -1,6 +1,7 @@
 package Genesis.Behaviors;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Animation {
     private String Name;
@@ -10,14 +11,16 @@ public class Animation {
     private int currentFrame;
     private int FrameLength;
     private long lastFrameTime;
+    private BufferedImage animationSheet;
 
 
-    public Animation(String name, int startColumn, int startRow, int frames) {
+    public Animation(String name, int startColumn, int startRow, int frames, BufferedImage animationSheet) {
         Name = name;
         StartColumn = startColumn;
         StartRow = startRow;
         Frames = frames;
         FrameLength = 100;
+        this.animationSheet = animationSheet;
     }
 
     public void nextFrame() {
@@ -72,6 +75,27 @@ public class Animation {
         this.currentFrame = currentFrame;
     }
 
+    public int getFrameLength() {
+        return FrameLength;
+    }
 
+    public void setFrameLength(int frameLength) {
+        FrameLength = frameLength;
+    }
 
+    public long getLastFrameTime() {
+        return lastFrameTime;
+    }
+
+    public void setLastFrameTime(long lastFrameTime) {
+        this.lastFrameTime = lastFrameTime;
+    }
+
+    public BufferedImage getAnimationSheet() {
+        return animationSheet;
+    }
+
+    public void setAnimationSheet(BufferedImage animationSheet) {
+        this.animationSheet = animationSheet;
+    }
 }

@@ -35,13 +35,13 @@ public class DropDownMenu extends UIElement {
     }
 
     @Override
-    public void OnUpdate() {
-        super.OnUpdate();
+    public void onUpdate() {
+        super.onUpdate();
     }
 
     @Override
-    public void Render(Graphics g) {
-        super.Render(g);
+    public void onRender(Graphics g) {
+        super.onRender(g);
 
         int height = titleHeight + subtitleHeight + getItemsHight();
         int width = this.getSize().getX();
@@ -116,18 +116,18 @@ public class DropDownMenu extends UIElement {
     }
 
     @Override
-    public void Hover(MouseEvent e) {
-        super.Hover(e);
+    public void onHover(MouseEvent e) {
+        super.onHover(e);
     }
 
     @Override
-    public void OnMouseLeave(MouseEvent e) {
-        super.OnMouseLeave(e);
+    public void onMouseLeave(MouseEvent e) {
+        super.onMouseLeave(e);
     }
 
     @Override
-    public void OnMouseClick(MouseEvent e) {
-        super.OnMouseClick(e);
+    public void onMouseClick(MouseEvent e) {
+        super.onMouseClick(e);
     }
 
     public int getItemHeight() {

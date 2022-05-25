@@ -7,7 +7,6 @@ package Genesis.UI;
 
 import Genesis.Math.Vector2;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Vector;
 
@@ -24,8 +23,8 @@ public class Listview extends UIElement{
     }
     
     @Override
-    public void Render(Graphics g) {
-        super.Render(g); //To change body of generated methods, choose Tools | Templates.
+    public void onRender(Graphics g) {
+        super.onRender(g); //To change body of generated methods, choose Tools | Templates.
         this.ItemSize = new Vector2(this.getSize().getX(), 50);
         BufferedImage buffer = new BufferedImage(this.getSize().getX(), (this.ListviewItems.size() * this.ItemSize.getY()), BufferedImage.TYPE_INT_ARGB);
         Graphics g2 = buffer.createGraphics();
@@ -33,7 +32,7 @@ public class Listview extends UIElement{
         {
             if(item.isEnabled())
             {
-                item.Render(g2);
+                item.onRender(g2);
             }
         }
         

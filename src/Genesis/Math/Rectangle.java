@@ -219,4 +219,19 @@ public class Rectangle {
         return  new Vector2(this.getEndX(), this.getEndY());
     }
 
+    public String toString() {
+        return this.location.getX() + ";" + this.location.getY() + ";" + this.size.getX() + ";" + this.size.getY();
+    }
+
+    public boolean isSame(Rectangle rectangle) {
+        if(this.getX() == rectangle.getX() && this.getY() == rectangle.getY() && this.getWidth() == rectangle.getWidth() && this.getHeight() == rectangle.getHeight()) {
+            return true;
+        }
+        return false;
+    }
+
+    public Rectangle duplicate() {
+        return new Rectangle(Integer.valueOf(getX()), Integer.valueOf(getY()), Integer.valueOf(getWidth()), Integer.valueOf(getHeight()));
+    }
+
 }

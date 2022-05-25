@@ -35,8 +35,8 @@ public class Progressbar extends UIElement {
     }
 
     @Override
-    public void Render(Graphics g) {
-        super.Render(g); //To change body of generated methods, choose Tools | Templates.
+    public void onRender(Graphics g) {
+        super.onRender(g); //To change body of generated methods, choose Tools | Templates.
         BufferedImage image = new BufferedImage(this.getSize().getX(), this.getSize().getY(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = image.createGraphics();
         
@@ -45,7 +45,7 @@ public class Progressbar extends UIElement {
         g2d.fillRect(0, 0, this.getSize().getX(), this.getSize().getY());
         
         // Draw Bar
-        float width = this.getSize().getX() / 100 * this.Current;
+        float width = (float)this.getSize().getX() / 100 * (float) this.Current;
         g2d.setColor(this.BarColor);
         g2d.fillRect(space , space , (int) width - (space * 2), this.getSize().getY() - (space * 2));
         
@@ -93,16 +93,7 @@ public class Progressbar extends UIElement {
     }
 
     public void setCurrent(int c) {
-        if(c > 100 || c < 0 )
-        {
-            this.Current = 0;
-            AfterCurrentValueChanged();
-            throw new UnsupportedOperationException("Your value is not between 0 and 100!");
-        }
-        else
-        {
-            this.Current = c;
-        }
+        this.Current = c;
         AfterCurrentValueChanged();
     }
 

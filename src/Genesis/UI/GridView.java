@@ -80,8 +80,8 @@ public class GridView extends UIElement {
     }
 
     @Override
-    public void Render(Graphics g) {
-        super.Render(g); //To change body of generated methods, choose Tools | Templates.
+    public void onRender(Graphics g) {
+        super.onRender(g); //To change body of generated methods, choose Tools | Templates.
         
         // Create Grapic device
         BufferedImage image = new BufferedImage(this.getSize().getX(), this.getSize().getY(), BufferedImage.TYPE_INT_ARGB);
@@ -123,7 +123,7 @@ public class GridView extends UIElement {
     }
 
     @Override
-    public void OnMouseClick(MouseEvent e) {
+    public void onMouseClick(MouseEvent e) {
         int i = 0;
         int MouseX = e.getX() - this.getCanvas().getLocation().getX() - this.getLocation().getX();
         int MouseY = e.getY() - this.getCanvas().getLocation().getY() - this.getLocation().getY();
@@ -142,7 +142,7 @@ public class GridView extends UIElement {
             }
             i++;
         }
-        super.OnMouseClick(e); 
+        super.onMouseClick(e);
     }
     
     

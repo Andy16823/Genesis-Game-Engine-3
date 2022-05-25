@@ -45,8 +45,8 @@ public class Frame extends UIElement{
     }
 
     @Override
-    public void Render(Graphics g) {
-        super.Render(g); 
+    public void onRender(Graphics g) {
+        super.onRender(g);
         BufferedImage img = new BufferedImage(this.getSize().getX(), this.getSize().getY(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = img.createGraphics();
         
@@ -76,7 +76,7 @@ public class Frame extends UIElement{
         {
             if(element.isEnabled())
             {
-                element.Render(g2d);
+                element.onRender(g2d);
             }
         }
         
@@ -84,30 +84,30 @@ public class Frame extends UIElement{
     }
 
     @Override
-    public void Hover(MouseEvent e) {
-        super.Hover(e); 
+    public void onHover(MouseEvent e) {
+        super.onHover(e);
         for(UIElement element : this.Elements)
         {
             if(element.isEnabled())
             {
-                if(element.Contains(e.getX() - this.getCanvas().getLocation().getX() -  this.getLocation().getX(), e.getY()- this.getCanvas().getLocation().getY() - this.getLocation().getY()))
+                if(element.contains(e.getX() - this.getCanvas().getLocation().getX() -  this.getLocation().getX(), e.getY()- this.getCanvas().getLocation().getY() - this.getLocation().getY()))
                 {
-                    element.Hover(e);
+                    element.onHover(e);
                 }
             }
         }
     }
 
     @Override
-    public void OnMouseClick(MouseEvent e) {
-        super.OnMouseClick(e); 
+    public void onMouseClick(MouseEvent e) {
+        super.onMouseClick(e);
         for(UIElement element : this.Elements)
         {
             if(element.isEnabled())
             {
-                if(element.Contains(e.getX() - this.getCanvas().getLocation().getX() - this.getLocation().getX(), e.getY() - this.getCanvas().getLocation().getY() - this.getLocation().getY()))
+                if(element.contains(e.getX() - this.getCanvas().getLocation().getX() - this.getLocation().getX(), e.getY() - this.getCanvas().getLocation().getY() - this.getLocation().getY()))
                 {
-                    element.OnMouseClick(e);
+                    element.onMouseClick(e);
                 }
             }
         }

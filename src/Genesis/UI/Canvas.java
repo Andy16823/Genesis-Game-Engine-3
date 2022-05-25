@@ -5,11 +5,11 @@
  */
 package Genesis.UI;
 
+import Genesis.Game;
 import Genesis.Input;
 import Genesis.Math.Vector2;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.Vector;
@@ -61,6 +61,7 @@ public class Canvas {
     public void AddElement(UIElement element)
     {
         element.setCanvas(this);
+        element.onElementAddToCanvas(this);
         this.Elements.add(element);
     }
     
@@ -86,7 +87,7 @@ public class Canvas {
         {
             if(e.isEnabled())
             {
-                e.Render(g2d);
+                e.onRender(g2d);
             }
         }
         g.drawImage(image, this.location.getX(), this.location.getY(), this.size.getX(), this.size.getY(), null);
@@ -103,12 +104,12 @@ public class Canvas {
         }
         for(UIElement element : this.Elements)
         {
-            if(element.Contains(e.getX() - this.getLocation().getX(), e.getY() - this.getLocation().getY()) && element.isEnabled())
+            if(element.contains(e.getX(), e.getY()) && element.isEnabled())
             {
-                element.Hover(e);
+                element.onHover(e);
             }
             else {
-                element.OnMouseLeave(e);
+                element.onMouseLeave(e);
             }
         }
     }
@@ -141,7 +142,7 @@ public class Canvas {
         }
         for(UIElement element : this.Elements)
         {
-            element.setHovered(false);
+            element.onMouseLeave(e);
         }
     }
     
@@ -158,14 +159,22 @@ public class Canvas {
             }
             for(UIElement element : this.Elements)
             {
-                if(element.Contains(e.getX() - location.getX(), e.getY() - location.getY()) && element.isEnabled())
+                if(element.contains(e.getX(), e.getY()) && element.isEnabled())
                 {
-                    element.OnMouseClick(e);
+                    element.onMouseClick(e);
                     element.setClicked(true);
                 }
                 else {
                     element.setClicked(false);
                 }
+            }
+        }
+    }
+
+    public void onUpdate(Game game) {
+        for(UIElement element : this.Elements) {
+            if(element.isEnabled()) {
+                element.onUpdate();
             }
         }
     }

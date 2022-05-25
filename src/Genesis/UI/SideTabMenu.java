@@ -1,13 +1,10 @@
 package Genesis.UI;
 
 import Genesis.Math.Vector2;
-import Genesis.Toolkit;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.util.Vector;
 
 public class SideTabMenu extends UIMenu {
     private int ItemCellsX = 4;
@@ -49,8 +46,8 @@ public class SideTabMenu extends UIMenu {
     }
 
     @Override
-    public void Render(Graphics g) {
-        super.Render(g);
+    public void onRender(Graphics g) {
+        super.onRender(g);
 
         BufferedImage renderTarget = new BufferedImage(this.getSize().getX(),this.getSize().getY(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = renderTarget.createGraphics();
@@ -143,8 +140,8 @@ public class SideTabMenu extends UIMenu {
     }
 
     @Override
-    public void OnMouseClick(MouseEvent e) {
-        super.OnMouseClick(e);
+    public void onMouseClick(MouseEvent e) {
+        super.onMouseClick(e);
         int MouseX = e.getX() - this.getCanvas().getLocation().getX() - this.getLocation().getX();
         int MouseY = e.getY() - this.getCanvas().getLocation().getY() - this.getLocation().getY();
 

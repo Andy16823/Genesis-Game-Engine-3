@@ -17,8 +17,8 @@ public class Panel extends UIElement {
     }
 
     @Override
-    public void Render(Graphics g) {
-        super.Render(g);
+    public void onRender(Graphics g) {
+        super.onRender(g);
 
         BufferedImage renderTarget = new BufferedImage(this.getSize().getX(), this.getSize().getY(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = renderTarget.createGraphics();
